@@ -3,11 +3,11 @@ package main
 import "bytes"
 import "os"
 import "io"
-import "http"
+import "net/http"
 import "log"
 import "golang.org/x/oauth2"
 
-const filename = "auth_token"
+const filename = "./auth_token"
 
 func token() *http.Client {
   buf := bytes.NewBuffer(nil)
