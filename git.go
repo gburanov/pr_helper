@@ -22,7 +22,7 @@ func fileAuthors(fileName string) []string {
   for _, line := range lines {
     if strings.Contains(line, "author ") {
       author := strings.TrimPrefix(line, "author ")
-      fmt.Println(author)
+      authors = append(authors, author)
     }
   }
   return authors
