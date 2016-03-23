@@ -31,7 +31,11 @@ func processPr(pr *github.PullRequest, client *github.Client) {
   if err != nil {
     log.Fatal(err)
   }
+  authors := []string{}
+
   for _, file := range files {
-    fileAuthors(*file.Filename)
+    authors = append(authors, fileAuthors(*file.Filename)...)
   }
+
+  log.Fatal(nil)
 }

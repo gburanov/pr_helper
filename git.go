@@ -5,10 +5,12 @@ import "os/exec"
 import "log"
 import "strings"
 
+const repoPath = "/Users/gburanov/code/wimdu"
+
 func fileAuthors(fileName string) []string {
   fmt.Println("Analyzing file ", fileName)
   command := exec.Command("git", "blame", "--line-porcelain", fileName)
-  command.Dir = "/Users/gburanov/code/wimdu"
+  command.Dir = repoPath
 
   out, err := command.Output()
   if err != nil {
@@ -23,7 +25,5 @@ func fileAuthors(fileName string) []string {
       fmt.Println(author)
     }
   }
-  log.Fatal(nil)
-
   return authors
 }
