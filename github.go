@@ -22,7 +22,7 @@ func showPrInfo(client *github.Client, num int) {
     log.Fatal(err)
   }
   red := color.New(color.FgRed, color.Bold)
-  red.Println(*pr.Title)
+  red.Println(*pr.Title, "#", num)
 }
 
 func processPr(client *github.Client, num int) {
@@ -31,13 +31,21 @@ func processPr(client *github.Client, num int) {
   if err != nil {
     log.Fatal(err)
   }
-  authors := []string{}
 
+  results := 0
+  authors_channel := make(chan []string)
   for _, file := range files {
     if strings.HasPrefix(*file.Filename, "phrase") {
       continue
     }
-    authors = append(authors, fileAuthors(*file.Filename)...)
+    results++
+    go func(fileName string) {
+      authors_channel <- fileAuthors(fileName)
+    }(*file.Filename)
+  }
+  authors := []string{}
+  for i := 1; i <= results; i++ {
+    authors = append(authors, <-authors_channel...)
   }
   arrayToMap(authors)
 }
