@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 import "os/exec"
-import "log"
+//import "log"
 import "strings"
 
 const repoPath = "/Users/gburanov/code/wimdu"
@@ -11,12 +11,14 @@ func fileAuthors(fileName string) []string {
   fmt.Println("Analyzing file ", fileName)
   command := exec.Command("git", "blame", "--line-porcelain", fileName)
   command.Dir = repoPath
+  authors := []string{}
 
   out, err := command.Output()
   if err != nil {
-    log.Fatal(err)
+    // assume this is because file does not exist before
+    //log.Fatal(err)
+    return authors
   }
-  authors := []string{}
 
   lines := strings.Split(string(out), "\n")
   for _, line := range lines {
