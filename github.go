@@ -1,6 +1,7 @@
 package main
 
 import "log"
+import "strings"
 
 import "github.com/google/go-github/github"
 import "github.com/fatih/color"
@@ -33,6 +34,9 @@ func processPr(client *github.Client, num int) {
   authors := []string{}
 
   for _, file := range files {
+    if strings.HasPrefix(*file.Filename, "phrase") {
+      continue
+    }
     authors = append(authors, fileAuthors(*file.Filename)...)
   }
   arrayToMap(authors)
