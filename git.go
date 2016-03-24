@@ -17,6 +17,8 @@ func fileAuthors(fileName string) []string {
 
   out, err := command.Output()
   if err != nil {
+    red := color.New(color.FgRed)
+    red.Println("NOT FOUND!!!")
     // assume this is because file does not exist before
     //log.Fatal(err)
     return authors

@@ -6,15 +6,16 @@ import "strings"
 import "github.com/google/go-github/github"
 import "github.com/fatih/color"
 
+const organization = "wimdu"
+const project = "wimdu"
+
 func listPRs(client *github.Client) {
   prs, _, err := client.PullRequests.List(organization, project, nil)
   if err != nil {
     log.Fatal(err)
   }
   for _, pr := range prs {
-    authors := processPr(client, *pr.Number)
-    authors = filterTop(5, authors)
-    display(authors)
+    displayPR(client, *pr.Number)
   }
 }
 
