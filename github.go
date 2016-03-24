@@ -1,9 +1,9 @@
 package main
 
 import "log"
-import "fmt"
 
 import "github.com/google/go-github/github"
+import "github.com/fatih/color"
 
 func listPRs(client *github.Client) {
   prs, _, err := client.PullRequests.List(organization, project, nil)
@@ -11,13 +11,22 @@ func listPRs(client *github.Client) {
     log.Fatal(err)
   }
   for _, pr := range prs {
-    processPr(&pr, client)
+    processPr(client, *pr.Number)
   }
 }
 
-func processPr(pr *github.PullRequest, client *github.Client) {
-  fmt.Println(*pr.Title)
-  files, _, err := client.PullRequests.ListFiles(organization, project, *pr.Number, nil)
+func showPrInfo(client *github.Client, num int) {
+  pr, _, err := client.PullRequests.Get(organization, project, num)
+  if err != nil {
+    log.Fatal(err)
+  }
+  red := color.New(color.FgRed, color.Bold)
+  red.Println(*pr.Title)
+}
+
+func processPr(client *github.Client, num int) {
+  showPrInfo(client, num)
+  files, _, err := client.PullRequests.ListFiles(organization, project, num, nil)
   if err != nil {
     log.Fatal(err)
   }

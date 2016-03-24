@@ -1,14 +1,16 @@
 package main
 
-import "fmt"
 import "os/exec"
 //import "log"
 import "strings"
 
+import "github.com/fatih/color"
+
 const repoPath = "/Users/gburanov/code/wimdu"
 
 func fileAuthors(fileName string) []string {
-  fmt.Println("Analyzing file ", fileName)
+  yellow := color.New(color.FgYellow)
+  yellow.Println("Analyzing file ", fileName)
   command := exec.Command("git", "blame", "--line-porcelain", fileName)
   command.Dir = repoPath
   authors := []string{}

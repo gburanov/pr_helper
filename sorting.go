@@ -1,7 +1,7 @@
 package main
 
 import "sort"
-import "fmt"
+import "github.com/fatih/color"
 
 func arrayToMap(authors []string) {
   ret := make(map[string] int )
@@ -22,6 +22,7 @@ func arrayToMap(authors []string) {
 
   for _, key := range a {
     author := reverse[key]
-    fmt.Println(author, " Values ", key)
+    green := color.New(color.FgGreen)
+    green.Println(author, " Values ", key)
   }
 }
