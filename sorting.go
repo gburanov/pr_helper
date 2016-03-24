@@ -1,16 +1,18 @@
 package main
 
 import "sort"
-import "github.com/fatih/color"
 
-func arrayToMap(authors []string) {
+func arrayToMap(authors []string) map[string]int {
   ret := make(map[string] int )
   for _, author := range authors {
     ret[author] += 1
   }
+  return ret
+}
 
+func filterTop(num int, authors map[string]int) map[string]int {
   reverse := map[int][]string{}
-  for k, v := range ret {
+  for k, v := range authors {
     reverse[v] = append(reverse[v], k)
   }
 
@@ -20,11 +22,16 @@ func arrayToMap(authors []string) {
   }
   sort.Sort(sort.Reverse(sort.IntSlice(a)))
 
+  ret := map[string]int{}
   for _, key := range a {
-    green := color.New(color.FgGreen)
     authors := reverse[key]
     for _, author := range authors {
-      green.Println(author, "[", key, "]")
+      ret[author] = key
+      num--
+      if num == 0 {
+        return ret
+      }
     }
   }
+  return ret
 }

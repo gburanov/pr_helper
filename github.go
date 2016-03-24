@@ -12,7 +12,9 @@ func listPRs(client *github.Client) {
     log.Fatal(err)
   }
   for _, pr := range prs {
-    processPr(client, *pr.Number)
+    authors := processPr(client, *pr.Number)
+    authors = filterTop(5, authors)
+    display(authors)
   }
 }
 
@@ -25,7 +27,7 @@ func showPrInfo(client *github.Client, num int) {
   red.Println(*pr.Title, "#", num)
 }
 
-func processPr(client *github.Client, num int) {
+func processPr(client *github.Client, num int) map[string]int {
   showPrInfo(client, num)
   files, _, err := client.PullRequests.ListFiles(organization, project, num, nil)
   if err != nil {
@@ -47,5 +49,5 @@ func processPr(client *github.Client, num int) {
   for i := 1; i <= results; i++ {
     authors = append(authors, <-authors_channel...)
   }
-  arrayToMap(authors)
+  return arrayToMap(authors)
 }
