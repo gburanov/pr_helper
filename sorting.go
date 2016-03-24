@@ -21,8 +21,10 @@ func arrayToMap(authors []string) {
   sort.Sort(sort.Reverse(sort.IntSlice(a)))
 
   for _, key := range a {
-    author := reverse[key]
     green := color.New(color.FgGreen)
-    green.Println(author, " Values ", key)
+    authors := reverse[key]
+    for _, author := range authors {
+      green.Println(author, "[", key, "]")
+    }
   }
 }
