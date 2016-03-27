@@ -28,8 +28,14 @@ func (repo *Repository) listPRs() {
     log.Fatal(err)
   }
   for _, pr := range prs {
-    displayPR(repo.Client, *pr.Number)
+    repo.displayPR(*pr.Number)
   }
+}
+
+func (repo *Repository) displayPR(num int) {
+  authors := processPr(repo.Client, num)
+  authors = filterTop(5, authors)
+  display(authors)
 }
 
 func showPrInfo(client *github.Client, num int) {

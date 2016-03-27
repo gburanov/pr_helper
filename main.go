@@ -3,7 +3,6 @@ package main
 import (
   "os"
   "strconv"
-  "github.com/google/go-github/github"
   "github.com/codegangsta/cli"
 )
 
@@ -39,10 +38,8 @@ func main() {
       Aliases:     []string{"n"},
       Usage:     "PR by number",
       Action: func(c *cli.Context) {
-        auth_token := token()
-        client := github.NewClient(auth_token)
         i, _ := strconv.Atoi(c.Args().First())
-        displayPR(client, i)
+        repo.displayPR(i)
       },
     },
   }
