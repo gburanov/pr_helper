@@ -3,20 +3,32 @@ package main
 import (
   "log"
   "strings"
+  "net/http"
   "github.com/google/go-github/github"
   "github.com/fatih/color"
 )
 
-const organization = "wimdu"
-const project = "wimdu"
+type Repository struct {
+  Organization string;
+  Project string;
+  Client *github.Client;
+}
 
-func listPRs(client *github.Client) {
-  prs, _, err := client.PullRequests.List(organization, project, nil)
+func NewRepository(organization string, project string, auth_token *http.Client) *Repository {
+  repo := new(Repository)
+  repo.Organization = organization
+  repo.Project = project
+  repo.Client = github.NewClient(auth_token)
+  return repo
+}
+
+func (repo *Repository) listPRs() {
+  prs, _, err := repo.Client.PullRequests.List(repo.Organization, repo.Project, nil)
   if err != nil {
     log.Fatal(err)
   }
   for _, pr := range prs {
-    displayPR(client, *pr.Number)
+    displayPR(repo.Client, *pr.Number)
   }
 }
 

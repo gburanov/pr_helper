@@ -7,7 +7,13 @@ import (
   "github.com/codegangsta/cli"
 )
 
+const organization = "wimdu"
+const project = "wimdu"
+
 func main() {
+  repo := NewRepository(organization, project, token())
+
+
   app := cli.NewApp()
   app.Name = "pr_helper"
   app.Usage = "Helps to find correct gut for PR!"
@@ -17,9 +23,7 @@ func main() {
       Aliases:     []string{"a"},
       Usage:     "All PRs",
       Action: func(c *cli.Context) {
-        auth_token := token()
-        client := github.NewClient(auth_token)
-        listPRs(client)
+        repo.listPRs()
       },
     },
     {
@@ -27,9 +31,7 @@ func main() {
       Aliases:     []string{"m"},
       Usage:     "Mine PRs",
       Action: func(c *cli.Context) {
-        auth_token := token()
-        client := github.NewClient(auth_token)
-        listPRs(client)
+        repo.listPRs()
       },
     },
     {
