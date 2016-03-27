@@ -1,10 +1,10 @@
 package main
 
-import "os/exec"
-//import "log"
-import "strings"
-
-import "github.com/fatih/color"
+import (
+  "os/exec"
+  "strings"
+  "github.com/fatih/color"
+)
 
 const repoPath = "/Users/gburanov/code/wimdu"
 

@@ -1,7 +1,9 @@
 package main
 
-import "github.com/fatih/color"
-import "github.com/google/go-github/github"
+import (
+  "github.com/fatih/color"
+  "github.com/google/go-github/github"
+)
 
 func display(authors map[string]int) {
   green := color.New(color.FgGreen)

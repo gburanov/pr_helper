@@ -1,11 +1,11 @@
 package main
 
-import "os"
-
-import "strconv"
-
-import "github.com/google/go-github/github"
-import "github.com/codegangsta/cli"
+import (
+  "os"
+  "strconv"
+  "github.com/google/go-github/github"
+  "github.com/codegangsta/cli"
+)
 
 func main() {
   app := cli.NewApp()

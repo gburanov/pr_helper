@@ -1,11 +1,13 @@
 package main
 
-import "bytes"
-import "os"
-import "io"
-import "net/http"
-import "log"
-import "golang.org/x/oauth2"
+import (
+  "bytes"
+  "os"
+  "io"
+  "log"
+  "net/http"
+  "golang.org/x/oauth2"
+)
 
 const filename = "./auth_token"
 

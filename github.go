@@ -1,10 +1,11 @@
 package main
 
-import "log"
-import "strings"
-
-import "github.com/google/go-github/github"
-import "github.com/fatih/color"
+import (
+  "log"
+  "strings"
+  "github.com/google/go-github/github"
+  "github.com/fatih/color"
+)
 
 const organization = "wimdu"
 const project = "wimdu"
