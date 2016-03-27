@@ -21,7 +21,7 @@ func main() {
       Aliases:     []string{"a"},
       Usage:     "All PRs",
       Action: func(c *cli.Context) {
-        repo.listPRs()
+        repo.listPRsByLabel("codereview")
       },
     },
     {
