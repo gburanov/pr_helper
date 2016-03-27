@@ -10,17 +10,15 @@ import (
 const repoPath = "/Users/gburanov/code/wimdu"
 
 func checkFileExist(fileName string) bool {
-  command := exec.Command("touch", fileName)
+  command := exec.Command("test", "-f", fileName)
   command.Dir = repoPath
   retCode := command.Run()
   if retCode != nil {
     red := color.New(color.FgRed)
-    red.Println("NOT FOUND!!!")
-  } else {
-    green := color.New(color.FgGreen)
-    green.Println("done")
+    red.Println(fileName, "not found")
+    return false
   }
-  return retCode != nil
+  return true
 }
 
 func fileAuthors(fileName string) []string {
@@ -36,6 +34,8 @@ func fileAuthors(fileName string) []string {
 
   out, err := command.Output()
   if err != nil {
+        red := color.New(color.FgRed)
+        red.Println("NOT FOUND!!!2222", fileName)
     log.Fatal(err)
   }
   lines := strings.Split(string(out), "\n")
