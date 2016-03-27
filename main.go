@@ -12,7 +12,6 @@ const project = "wimdu"
 func main() {
   repo := NewRepository(organization, project, token())
 
-
   app := cli.NewApp()
   app.Name = "pr_helper"
   app.Usage = "Helps to find correct gut for PR!"
@@ -39,7 +38,7 @@ func main() {
       Usage:     "PR by number",
       Action: func(c *cli.Context) {
         i, _ := strconv.Atoi(c.Args().First())
-        repo.displayPR(i)
+        repo.getPR(i).display()
       },
     },
   }
