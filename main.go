@@ -23,6 +23,16 @@ func main() {
       },
     },
     {
+      Name:      "mine",
+      Aliases:     []string{"m"},
+      Usage:     "Mine PRs",
+      Action: func(c *cli.Context) {
+        auth_token := token()
+        client := github.NewClient(auth_token)
+        listPRs(client)
+      },
+    },
+    {
       Name:      "number",
       Aliases:     []string{"n"},
       Usage:     "PR by number",
