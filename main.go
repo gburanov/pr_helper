@@ -37,7 +37,18 @@ func main() {
       Action: func(c *cli.Context) {
         fillArguments(c)
         for _, pr := range repo.PRs() {
-          display(pr.authors())
+          display(filterTop(5, pr.authors()))
+        }
+      },
+    },
+    {
+      Name:      "index",
+      Aliases:     []string{"i"},
+      Usage:     "Only PR titles",
+      Action: func(c *cli.Context) {
+        fillArguments(c)
+        for _, pr := range repo.PRs() {
+          pr.showInfo()
         }
       },
     },
@@ -48,7 +59,7 @@ func main() {
       Action: func(c *cli.Context) {
         fillArguments(c)
         for _, pr := range repo.myPRs() {
-          display(pr.authors())
+          display(filterTop(5, pr.authors()))
         }
       },
     },
