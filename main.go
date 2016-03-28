@@ -36,7 +36,9 @@ func main() {
       Usage:     "All PRs",
       Action: func(c *cli.Context) {
         fillArguments(c)
-        repo.listPRsByLabel("codereview")
+        for _, pr := range repo.PRs() {
+          display(pr.authors())
+        }
       },
     },
     {
@@ -45,7 +47,9 @@ func main() {
       Usage:     "Mine PRs",
       Action: func(c *cli.Context) {
         fillArguments(c)
-        repo.listMyPRs()
+        for _, pr := range repo.myPRs() {
+          display(pr.authors())
+        }
       },
     },
     {

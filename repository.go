@@ -20,36 +20,26 @@ func NewRepository(organization string, project string, auth_token *http.Client)
   return repo
 }
 
-func (repo *Repository) listPRs() {
-  prs, _, err := repo.Client.PullRequests.List(repo.Organization, repo.Project, nil)
+func (repo *Repository) listPRsbyQuery(query string) []PR  {
+  prs, _, err := repo.Client.Search.Issues(query, nil)
   if err != nil {
     log.Fatal(err)
   }
-  for _, pr := range prs {
-    repo.getPR(*pr.Number).display()
+  ret := []PR {}
+  for _, pr := range prs.Issues {
+    ret = append(ret, *repo.getPR(*pr.Number))
   }
+  return ret
 }
 
-func (repo *Repository) listMyPRs() {
+func (repo *Repository) myPRs() []PR {
   query := "repo:" + repo.Organization + "/" + repo.Project + " label:" + label + " author:gburanov"
-  prs, _, err := repo.Client.Search.Issues(query, nil)
-  if err != nil {
-    log.Fatal(err)
-  }
-  for _, issue := range prs.Issues {
-    repo.getPR(*issue.Number).display()
-  }
+  return repo.listPRsbyQuery(query)
 }
 
-func (repo *Repository) listPRsByLabel(label string) {
+func (repo *Repository) PRs() []PR {
   query := "repo:" + repo.Organization + "/" + repo.Project + " label:" + label
-  prs, _, err := repo.Client.Search.Issues(query, nil)
-  if err != nil {
-    log.Fatal(err)
-  }
-  for _, issue := range prs.Issues {
-    repo.getPR(*issue.Number).display()
-  }
+  return repo.listPRsbyQuery(query)
 }
 
 func (repo *Repository) getPR(number int) *PR {
