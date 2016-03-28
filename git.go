@@ -14,16 +14,20 @@ func checkFileExist(fileName string) bool {
   command.Dir = repoPath
   retCode := command.Run()
   if retCode != nil {
-    red := color.New(color.FgRed)
-    red.Println(fileName, "not found")
+    if verbose {
+      red := color.New(color.FgRed)
+      red.Println(fileName, "not found")
+    }
     return false
   }
   return true
 }
 
 func fileAuthors(fileName string) []string {
-  yellow := color.New(color.FgYellow)
-  yellow.Println("Analyzing file ", fileName)
+  if verbose {
+    yellow := color.New(color.FgYellow)
+    yellow.Println("Analyzing file ", fileName)
+  }
   authors := []string{}
   if checkFileExist(fileName) == false {
     return authors
