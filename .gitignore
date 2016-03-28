@@ -38,3 +38,5 @@ build/
 
 auth_token
 pr_helper
+
+vendor/
