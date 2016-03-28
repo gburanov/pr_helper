@@ -30,6 +30,17 @@ func (repo *Repository) listPRs() {
   }
 }
 
+func (repo *Repository) listMyPRs() {
+  query := "repo:" + repo.Organization + "/" + repo.Project + " label:" + label + " author:gburanov"
+  prs, _, err := repo.Client.Search.Issues(query, nil)
+  if err != nil {
+    log.Fatal(err)
+  }
+  for _, issue := range prs.Issues {
+    repo.getPR(*issue.Number).display()
+  }
+}
+
 func (repo *Repository) listPRsByLabel(label string) {
   query := "repo:" + repo.Organization + "/" + repo.Project + " label:" + label
   prs, _, err := repo.Client.Search.Issues(query, nil)

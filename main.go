@@ -8,6 +8,7 @@ import (
 
 const organization = "wimdu"
 const project = "wimdu"
+const label = "codereview"
 
 func main() {
   repo := NewRepository(organization, project, token())
@@ -29,7 +30,7 @@ func main() {
       Aliases:     []string{"m"},
       Usage:     "Mine PRs",
       Action: func(c *cli.Context) {
-        repo.listPRs()
+        repo.listMyPRs()
       },
     },
     {
