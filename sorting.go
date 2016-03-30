@@ -2,11 +2,6 @@ package main
 
 import "sort"
 
-type Author struct {
-  Name string
-  Email string
-}
-
 func arrayToMap(authors []Author) map[Author]int {
   ret := make(map[Author] int )
   for _, author := range authors {

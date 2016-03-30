@@ -39,10 +39,18 @@ func fileAuthors(fileName string) []Author {
     log.Fatal(err)
   }
   lines := strings.Split(string(out), "\n")
+
+  name := ""
   for _, line := range lines {
     if strings.Contains(line, "author ") {
-      author := Author{ Name: strings.TrimPrefix(line, "author ") }
-      authors = append(authors, author)
+      name = strings.TrimPrefix(line, "author ")
+    }
+    if strings.Contains(line, "author-mail <") {
+      email := strings.TrimSuffix(strings.TrimPrefix(line, "author-mail <"), ">")
+      author := Author{ Name: name, Email: email }
+      if author.available() {
+        authors = append(authors, author)
+      }
     }
   }
   return authors
