@@ -14,16 +14,16 @@ func display(authors map[Author]int) {
 func showLeftStats(authors map[Author]int) {
   total := 0
   left := 0
-  for author, _ := range authors {
-    if !author.available() {
-      left += 1
+  for author, lines := range authors {
+    if !author.AtWimdu() {
+      left += lines
     }
-    total += 1
+    total += lines
   }
   percent := float32(left)/float32(total)
   yellow := color.New(color.FgYellow)
-  yellow.Println(left, "out of", total,"left")
-  if (total > 10 && percent > 0.33) {
+  yellow.Println(left, "out of", total,"lines unmntained")
+  if (total > 100 && percent > 0.7) || (percent > 0.9) {
     yellow.Println("WARNING! DEEP LEGACY")
   }
 }

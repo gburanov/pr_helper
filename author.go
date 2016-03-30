@@ -26,11 +26,14 @@ func blacklist() map[string]bool {
     for _, line := range lines {
       Blacklist[line] = true
     }
-    //Blacklist[myEmail()] = true
   }
   return Blacklist
 }
 
-func (author *Author) available() bool {
+func (author *Author) AtWimdu() bool {
   return !blacklist()[author.Email]
+}
+
+func (author *Author) filtered() bool {
+  return !author.AtWimdu() || author.Email == myEmail()
 }

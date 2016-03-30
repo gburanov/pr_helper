@@ -14,7 +14,7 @@ func filterTop(num int, authors map[Author]int) map[Author]int {
   reverse := map[int][]Author{}
   for k, v := range authors {
     // also skip blacklisted
-    if !k.available() {
+    if k.filtered() {
       continue
     }
 
