@@ -65,9 +65,7 @@ func fileAuthors(fileName string) []Author {
     if strings.Contains(line, "author-mail <") {
       email := strings.TrimSuffix(strings.TrimPrefix(line, "author-mail <"), ">")
       author := Author{ Name: name, Email: email }
-      if author.available() {
-        authors = append(authors, author)
-      }
+      authors = append(authors, author)
     }
   }
   return authors

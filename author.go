@@ -26,7 +26,7 @@ func blacklist() map[string]bool {
     for _, line := range lines {
       Blacklist[line] = true
     }
-    Blacklist[myEmail()] = true
+    //Blacklist[myEmail()] = true
   }
   return Blacklist
 }

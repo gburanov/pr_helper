@@ -13,6 +13,11 @@ func arrayToMap(authors []Author) map[Author]int {
 func filterTop(num int, authors map[Author]int) map[Author]int {
   reverse := map[int][]Author{}
   for k, v := range authors {
+    // also skip blacklisted
+    if !k.available() {
+      continue
+    }
+
     reverse[v] = append(reverse[v], k)
   }
 

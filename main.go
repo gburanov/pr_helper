@@ -37,7 +37,9 @@ func main() {
       Action: func(c *cli.Context) {
         fillArguments(c)
         for _, pr := range repo.PRs() {
-          display(filterTop(5, pr.authors()))
+          authors := pr.authors()
+          showLeftStats(authors)
+          display(filterTop(5, authors))
         }
       },
     },
