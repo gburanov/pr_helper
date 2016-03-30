@@ -2,16 +2,21 @@ package main
 
 import "sort"
 
-func arrayToMap(authors []string) map[string]int {
-  ret := make(map[string] int )
+type Author struct {
+  Name string
+  Email string
+}
+
+func arrayToMap(authors []Author) map[Author]int {
+  ret := make(map[Author] int )
   for _, author := range authors {
     ret[author] += 1
   }
   return ret
 }
 
-func filterTop(num int, authors map[string]int) map[string]int {
-  reverse := map[int][]string{}
+func filterTop(num int, authors map[Author]int) map[Author]int {
+  reverse := map[int][]Author{}
   for k, v := range authors {
     reverse[v] = append(reverse[v], k)
   }
@@ -22,7 +27,7 @@ func filterTop(num int, authors map[string]int) map[string]int {
   }
   sort.Sort(sort.Reverse(sort.IntSlice(a)))
 
-  ret := map[string]int{}
+  ret := map[Author]int{}
   for _, key := range a {
     authors := reverse[key]
     for _, author := range authors {

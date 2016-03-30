@@ -4,9 +4,9 @@ import (
   "github.com/fatih/color"
 )
 
-func display(authors map[string]int) {
+func display(authors map[Author]int) {
   green := color.New(color.FgGreen)
   for author, count := range authors {
-    green.Println(author, "[", count, "]")
+    green.Println(author.Name, "[", count, "]")
   }
 }

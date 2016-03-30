@@ -21,12 +21,12 @@ func checkFileExist(fileName string) bool {
   return true
 }
 
-func fileAuthors(fileName string) []string {
+func fileAuthors(fileName string) []Author {
   if verbose {
     yellow := color.New(color.FgYellow)
     yellow.Println("Analyzing file ", fileName)
   }
-  authors := []string{}
+  authors := []Author{}
   if checkFileExist(fileName) == false {
     return authors
   }
@@ -41,7 +41,7 @@ func fileAuthors(fileName string) []string {
   lines := strings.Split(string(out), "\n")
   for _, line := range lines {
     if strings.Contains(line, "author ") {
-      author := strings.TrimPrefix(line, "author ")
+      author := Author{ Name: strings.TrimPrefix(line, "author ") }
       authors = append(authors, author)
     }
   }

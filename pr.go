@@ -26,7 +26,7 @@ func (pr *PR) showInfo() {
   red.Println(*pr_.Title, "#", pr.Number)
 }
 
-func (pr *PR) authors() map[string]int {
+func (pr *PR) authors() map[Author]int {
   pr.showInfo()
   files, _, err := pr.Repository.Client.PullRequests.
     ListFiles(pr.Repository.Organization, pr.Repository.Project, pr.Number, nil)
@@ -35,7 +35,7 @@ func (pr *PR) authors() map[string]int {
   }
 
   results := 0
-  authors_channel := make(chan []string)
+  authors_channel := make(chan []Author)
   for _, file := range files {
     if strings.HasPrefix(*file.Filename, "phrase") {
       continue
@@ -45,7 +45,7 @@ func (pr *PR) authors() map[string]int {
       authors_channel <- fileAuthors(fileName)
     }(*file.Filename)
   }
-  authors := []string{}
+  authors := []Author{}
   for i := 1; i <= results; i++ {
     authors = append(authors, <-authors_channel...)
   }
