@@ -2,6 +2,7 @@ package main
 
 import (
   "os"
+  "fmt"
   "strconv"
   "github.com/codegangsta/cli"
 )
@@ -40,6 +41,7 @@ func main() {
           authors := pr.authors()
           showLeftStats(authors)
           display(filterTop(5, authors))
+          fmt.Println()
         }
       },
     },
