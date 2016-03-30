@@ -34,12 +34,12 @@ func (repo *Repository) listPRsbyQuery(query string) []PR  {
 }
 
 func (repo *Repository) MyPRs() []PR {
-  query := "repo:" + repo.Organization + "/" + repo.Project + " label:" + label + " author:gburanov"
+  query := "is:open repo:" + repo.Organization + "/" + repo.Project + " label:" + label + " author:gburanov"
   return repo.listPRsbyQuery(query)
 }
 
 func (repo *Repository) PRs() []PR {
-  query := "repo:" + repo.Organization + "/" + repo.Project + " label:" + label
+  query := "is:open repo:" + repo.Organization + "/" + repo.Project + " label:" + label
   return repo.listPRsbyQuery(query)
 }
 

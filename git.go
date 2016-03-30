@@ -36,8 +36,6 @@ func fileAuthors(fileName string) []string {
 
   out, err := command.Output()
   if err != nil {
-        red := color.New(color.FgRed)
-        red.Println("NOT FOUND!!!2222", fileName)
     log.Fatal(err)
   }
   lines := strings.Split(string(out), "\n")
