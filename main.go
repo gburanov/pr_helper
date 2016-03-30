@@ -58,7 +58,7 @@ func main() {
       Usage:     "Mine PRs",
       Action: func(c *cli.Context) {
         fillArguments(c)
-        for _, pr := range repo.myPRs() {
+        for _, pr := range repo.MyPRs() {
           display(filterTop(5, pr.authors()))
         }
       },
@@ -70,7 +70,7 @@ func main() {
       Action: func(c *cli.Context) {
         fillArguments(c)
         i, _ := strconv.Atoi(c.Args().First())
-        repo.getPR(i).display()
+        repo.GetPR(i).display()
       },
     },
   }

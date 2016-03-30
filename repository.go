@@ -7,9 +7,9 @@ import (
 )
 
 type Repository struct {
-  Organization string;
-  Project string;
-  Client *github.Client;
+  Organization string
+  Project string
+  Client *github.Client
 }
 
 func NewRepository(organization string, project string, auth_token *http.Client) *Repository {
@@ -27,12 +27,12 @@ func (repo *Repository) listPRsbyQuery(query string) []PR  {
   }
   ret := []PR {}
   for _, pr := range prs.Issues {
-    ret = append(ret, *repo.getPR(*pr.Number))
+    ret = append(ret, *repo.GetPR(*pr.Number))
   }
   return ret
 }
 
-func (repo *Repository) myPRs() []PR {
+func (repo *Repository) MyPRs() []PR {
   query := "repo:" + repo.Organization + "/" + repo.Project + " label:" + label + " author:gburanov"
   return repo.listPRsbyQuery(query)
 }
@@ -42,7 +42,7 @@ func (repo *Repository) PRs() []PR {
   return repo.listPRsbyQuery(query)
 }
 
-func (repo *Repository) getPR(number int) *PR {
+func (repo *Repository) GetPR(number int) *PR {
   pr := new(PR)
   pr.Repository = repo
   pr.Number = number
