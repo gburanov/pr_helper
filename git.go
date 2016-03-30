@@ -7,6 +7,23 @@ import (
   "github.com/fatih/color"
 )
 
+var MyEmail = ""
+
+func myEmail() string {
+  if MyEmail != "" {
+    return MyEmail
+  }
+
+  command := exec.Command("git", "config", "user.email")
+  command.Dir = GetSettings().RepositoryPath
+  out, err := command.Output()
+  if err != nil {
+    log.Fatal(err)
+  }
+  MyEmail = strings.TrimSuffix(string(out), "\n")
+  return MyEmail
+}
+
 func checkFileExist(fileName string) bool {
   command := exec.Command("test", "-f", fileName)
   command.Dir = GetSettings().RepositoryPath
