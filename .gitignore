@@ -36,7 +36,7 @@ build/
 .rvmrc
 
 
-auth_token
+settings.yml
 pr_helper
 
 vendor/

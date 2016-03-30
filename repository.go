@@ -21,7 +21,8 @@ func NewRepository(organization string, project string, auth_token *http.Client)
 }
 
 func (repo *Repository) listPRsbyQuery(query string) []PR  {
-  prs, _, err := repo.Client.Search.Issues(query, nil)
+  options := github.SearchOptions{}
+  prs, _, err := repo.Client.Search.Issues(query, &options)
   if err != nil {
     log.Fatal(err)
   }

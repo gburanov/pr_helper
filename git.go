@@ -7,11 +7,9 @@ import (
   "github.com/fatih/color"
 )
 
-const repoPath = "/Users/gburanov/code/wimdu"
-
 func checkFileExist(fileName string) bool {
   command := exec.Command("test", "-f", fileName)
-  command.Dir = repoPath
+  command.Dir = GetSettings().RepositoryPath
   retCode := command.Run()
   if retCode != nil {
     if verbose {
@@ -34,7 +32,7 @@ func fileAuthors(fileName string) []string {
   }
 
   command := exec.Command("git", "blame", "--line-porcelain", fileName)
-  command.Dir = repoPath
+  command.Dir = GetSettings().RepositoryPath
 
   out, err := command.Output()
   if err != nil {
