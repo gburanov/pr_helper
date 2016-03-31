@@ -1,4 +1,4 @@
-package main
+package pr_helper
 
 import (
   "log"
@@ -12,7 +12,7 @@ type PR struct {
 }
 
 func (pr *PR) display() {
-  authors := filterTop(5, pr.authors())
+  authors := filterTop(5, pr.Authors())
   display(authors)
 }
 
@@ -26,7 +26,7 @@ func (pr *PR) showInfo() {
   red.Println(*pr_.Title, "#", pr.Number)
 }
 
-func (pr *PR) authors() map[Author]int {
+func (pr *PR) Authors() map[Author]int {
   pr.showInfo()
   files, _, err := pr.Repository.Client.PullRequests.
     ListFiles(pr.Repository.Organization, pr.Repository.Project, pr.Number, nil)

@@ -1,4 +1,4 @@
-package main
+package pr_helper
 
 import (
   "log"
@@ -33,12 +33,12 @@ func (repo *Repository) listPRsbyQuery(query string) []PR  {
 }
 
 func (repo *Repository) MyPRs() []PR {
-  query := "is:open repo:" + repo.Organization + "/" + repo.Project + " label:" + label + " author:gburanov"
+  query := "is:open repo:" + repo.Organization + "/" + repo.Project + " label:" + GetSettings().Label + " author:gburanov"
   return repo.listPRsbyQuery(query)
 }
 
 func (repo *Repository) PRs() []PR {
-  query := "is:open repo:" + repo.Organization + "/" + repo.Project + " label:" + label
+  query := "is:open repo:" + repo.Organization + "/" + repo.Project + " label:" + GetSettings().Label
   return repo.listPRsbyQuery(query)
 }
 

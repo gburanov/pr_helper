@@ -1,4 +1,4 @@
-package main
+package pr_helper
 
 import (
   "bytes"
@@ -13,6 +13,8 @@ const SettingsFile = "settings.yml"
 type Settings struct {
   AuthToken string
   RepositoryPath string
+  Verbosity bool
+  Label string
 }
 
 func readFile(filename string) []byte {

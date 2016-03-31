@@ -5,18 +5,16 @@ import (
   "fmt"
   "strconv"
   "github.com/codegangsta/cli"
+
+  "pr_helper"
 )
 
 const organization = "wimdu"
 const project = "wimdu"
 const label = "codereview"
 
-var verbose bool
-
 func main() {
-  verbose = false
-
-  repo := NewRepository(organization, project, token())
+  repo := pr_helper.NewRepository(organization, project, pr_helper.Token())
 
   app := cli.NewApp()
   app.Name = "pr_helper"
@@ -38,7 +36,7 @@ func main() {
       Action: func(c *cli.Context) {
         fillArguments(c)
         for _, pr := range repo.PRs() {
-          authors := pr.authors()
+          authors := pr.Authors()
           showLeftStats(authors)
           display(filterTop(5, authors))
           fmt.Println()

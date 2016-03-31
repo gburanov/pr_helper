@@ -1,4 +1,4 @@
-package main
+package pr_helper
 
 import (
   "github.com/fatih/color"

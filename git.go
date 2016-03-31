@@ -1,4 +1,4 @@
-package main
+package pr_helper
 
 import (
   "log"
@@ -29,7 +29,7 @@ func checkFileExist(fileName string) bool {
   command.Dir = GetSettings().RepositoryPath
   retCode := command.Run()
   if retCode != nil {
-    if verbose {
+    if GetSettings().Verbosity {
       red := color.New(color.FgRed)
       red.Println(fileName, "not found")
     }
@@ -39,7 +39,7 @@ func checkFileExist(fileName string) bool {
 }
 
 func fileAuthors(fileName string) []Author {
-  if verbose {
+  if GetSettings().Verbosity {
     yellow := color.New(color.FgYellow)
     yellow.Println("Analyzing file ", fileName)
   }
