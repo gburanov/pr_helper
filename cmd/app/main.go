@@ -34,11 +34,10 @@ func main() {
       Aliases:     []string{"a"},
       Usage:     "All PRs",
       Action: func(c *cli.Context) {
-        fillArguments(c)
         for _, pr := range repo.PRs() {
           authors := pr.Authors()
           showLeftStats(authors)
-          display(filterTop(5, authors))
+          displayPR(&pr)
           fmt.Println()
         }
       },
@@ -48,9 +47,8 @@ func main() {
       Aliases:     []string{"i"},
       Usage:     "Only PR titles",
       Action: func(c *cli.Context) {
-        fillArguments(c)
         for _, pr := range repo.PRs() {
-          pr.showInfo()
+          pr.ShowInfo()
         }
       },
     },
@@ -59,9 +57,8 @@ func main() {
       Aliases:     []string{"m"},
       Usage:     "Mine PRs",
       Action: func(c *cli.Context) {
-        fillArguments(c)
         for _, pr := range repo.MyPRs() {
-          display(filterTop(5, pr.authors()))
+          displayPR(&pr)
         }
       },
     },
@@ -70,18 +67,11 @@ func main() {
       Aliases:     []string{"n"},
       Usage:     "PR by number",
       Action: func(c *cli.Context) {
-        fillArguments(c)
         i, _ := strconv.Atoi(c.Args().First())
-        repo.GetPR(i).display()
+        displayPR(repo.GetPR(i))
       },
     },
   }
 
   app.Run(os.Args)
-}
-
-func fillArguments(c *cli.Context) {
-  if c.Bool("verbose") == true {
-    verbose = true
-  }
 }

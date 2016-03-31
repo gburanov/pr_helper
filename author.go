@@ -11,7 +11,7 @@ type Author struct {
   Email string
 }
 
-func (author *Author) asStr() string {
+func (author *Author) AsStr() string {
   return author.Name + "<" + author.Email + ">"
 }
 

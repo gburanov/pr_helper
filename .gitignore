@@ -1,3 +1,6 @@
+*
+!*.*
+
 *.gem
 *.rbc
 /.config
@@ -38,6 +41,5 @@ build/
 
 settings.yml
 blacklist
-pr_helper
 
 vendor/

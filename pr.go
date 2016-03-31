@@ -11,12 +11,7 @@ type PR struct {
   Number int
 }
 
-func (pr *PR) display() {
-  authors := filterTop(5, pr.Authors())
-  display(authors)
-}
-
-func (pr *PR) showInfo() {
+func (pr *PR) ShowInfo() {
   pr_, _, err := pr.Repository.Client.PullRequests.
     Get(pr.Repository.Organization, pr.Repository.Project, pr.Number)
   if err != nil {
@@ -26,8 +21,8 @@ func (pr *PR) showInfo() {
   red.Println(*pr_.Title, "#", pr.Number)
 }
 
-func (pr *PR) Authors() map[Author]int {
-  pr.showInfo()
+func (pr *PR) Authors() *Authors {
+  pr.ShowInfo()
   files, _, err := pr.Repository.Client.PullRequests.
     ListFiles(pr.Repository.Organization, pr.Repository.Project, pr.Number, nil)
   if err != nil {
