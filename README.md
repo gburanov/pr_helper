@@ -25,4 +25,4 @@ Copy blacklist file
 
 And run it
 
-    $ ./pr_helper a
+    $ pr_helper a
