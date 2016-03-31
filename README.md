@@ -8,13 +8,21 @@ First of all, install Go
 
 Setup the $GOPATH variable
 
-    set $GOPATH=~/golang
+    mkdir ~/golang
+    export GOPATH=~/golang
+    export PATH=$PATH:~/golang/bin/
 
 Download the project
 
     go get github.com/gburanov/pr_helper
 
+Create settings.yml file
+
+    authtoken: token
+    repositorypath: path to repository
+
+Copy blacklist file
+
 And run it
 
-    $ cd $GOPATH/bin
     $ ./pr_helper a
