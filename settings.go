@@ -13,6 +13,8 @@ const SettingsFile = "settings.yml"
 type Settings struct {
   AuthToken string
   RepositoryPath string
+  Organization string
+  Project string
   Verbosity bool
   Label string
 }

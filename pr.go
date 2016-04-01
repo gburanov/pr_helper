@@ -3,7 +3,7 @@ package pr_helper
 import (
   "log"
   "strings"
-  "github.com/fatih/color"
+  "strconv"
 )
 
 type PR struct {
@@ -11,18 +11,16 @@ type PR struct {
   Number int
 }
 
-func (pr *PR) ShowInfo() {
+func (pr *PR) ShowInfo() string {
   pr_, _, err := pr.Repository.Client.PullRequests.
     Get(pr.Repository.Organization, pr.Repository.Project, pr.Number)
   if err != nil {
     log.Fatal(err)
   }
-  red := color.New(color.FgRed, color.Bold)
-  red.Println(*pr_.Title, "#", pr.Number)
+  return *pr_.Title +  " (#" + strconv.Itoa(pr.Number) + ")"
 }
 
 func (pr *PR) Authors() *Authors {
-  pr.ShowInfo()
   files, _, err := pr.Repository.Client.PullRequests.
     ListFiles(pr.Repository.Organization, pr.Repository.Project, pr.Number, nil)
   if err != nil {

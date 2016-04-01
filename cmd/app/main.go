@@ -35,8 +35,6 @@ func main() {
       Usage:     "All PRs",
       Action: func(c *cli.Context) {
         for _, pr := range repo.PRs() {
-          authors := pr.Authors()
-          showLeftStats(authors)
           displayPR(&pr)
           fmt.Println()
         }
