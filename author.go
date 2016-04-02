@@ -1,39 +1,40 @@
 package pr_helper
 
 import (
-  "log"
-  "strings"
-  "io/ioutil"
+	"io/ioutil"
+	"log"
+	"strings"
 )
 
 type Author struct {
-  Name string
-  Email string
+	Name  string
+	Email string
 }
 
 func (author *Author) AsStr() string {
-  return author.Name + "<" + author.Email + ">"
+	return author.Name + "<" + author.Email + ">"
 }
 
 var Blacklist = map[string]bool{}
+
 func blacklist() map[string]bool {
-  if len(Blacklist) == 0 {
-    content, err := ioutil.ReadFile("blacklist")
-    if err != nil {
-      log.Fatal(err)
-    }
-    lines := strings.Split(string(content), "\n")
-    for _, line := range lines {
-      Blacklist[line] = true
-    }
-  }
-  return Blacklist
+	if len(Blacklist) == 0 {
+		content, err := ioutil.ReadFile("blacklist")
+		if err != nil {
+			log.Fatal(err)
+		}
+		lines := strings.Split(string(content), "\n")
+		for _, line := range lines {
+			Blacklist[line] = true
+		}
+	}
+	return Blacklist
 }
 
 func (author *Author) AtWimdu() bool {
-  return !blacklist()[author.Email]
+	return !blacklist()[author.Email]
 }
 
 func (author *Author) filtered() bool {
-  return !author.AtWimdu() || author.Email == myEmail()
+	return !author.AtWimdu() || author.Email == myEmail()
 }

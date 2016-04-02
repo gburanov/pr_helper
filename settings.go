@@ -1,40 +1,40 @@
 package pr_helper
 
 import (
-  "bytes"
-  "os"
-  "io"
-  "log"
-  "gopkg.in/yaml.v2"
+	"bytes"
+	"gopkg.in/yaml.v2"
+	"io"
+	"log"
+	"os"
 )
 
 const SettingsFile = "settings.yml"
 
 type Settings struct {
-  AuthToken string
-  RepositoryPath string
-  Organization string
-  Project string
-  Verbosity bool
-  Label string
+	AuthToken      string
+	RepositoryPath string
+	Organization   string
+	Project        string
+	Verbosity      bool
+	Label          string
 }
 
 func readFile(filename string) []byte {
-  buf := bytes.NewBuffer(nil)
-  f,err := os.Open(filename)
-  if err != nil {
-    log.Fatal(err)
-  }
-  io.Copy(buf, f)
-  f.Close()
-  return buf.Bytes()
+	buf := bytes.NewBuffer(nil)
+	f, err := os.Open(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	io.Copy(buf, f)
+	f.Close()
+	return buf.Bytes()
 }
 
 func GetSettings() *Settings {
-  settings := new(Settings)
-  err := yaml.Unmarshal(readFile(SettingsFile), &settings)
-  if err != nil {
-    log.Fatal(err)
-  }
-  return settings
+	settings := new(Settings)
+	err := yaml.Unmarshal(readFile(SettingsFile), &settings)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return settings
 }

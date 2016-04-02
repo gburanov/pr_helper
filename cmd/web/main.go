@@ -1,21 +1,26 @@
 package main
 
 import (
-	"io"
-	"net/http"
-
   "pr_helper"
+
+  "github.com/go-martini/martini"
 )
 
-func hello(w http.ResponseWriter, r *http.Request) {
+func showPrs() string {
+  ret := ""
   repo := pr_helper.NewRepository(pr_helper.GetSettings().Organization, pr_helper.GetSettings().Project, pr_helper.Token())
   for _, pr := range repo.PRs() {
-		io.WriteString(w, "<p>")
-    io.WriteString(w, pr.ShowInfo())
+    ret += "<p>"
+    ret += pr.ShowInfo()
   }
+
+  return ret
 }
 
 func main() {
-	http.HandleFunc("/", hello)
-	http.ListenAndServe(":8000", nil)
+	m := martini.Classic()
+  m.Get("/", func() string {
+    return showPrs()
+  })
+  m.Run()
 }
