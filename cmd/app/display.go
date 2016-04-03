@@ -19,6 +19,8 @@ func displayPR(pr *pr_helper.PR) {
   red.Println(pr.Url())
 
   authors := pr.Authors()
+  authors.Check()
+
   showLeftStats(authors)
 
   authors = pr_helper.FilterTop(5, authors)

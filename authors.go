@@ -2,6 +2,12 @@ package pr_helper
 
 type Authors map[Author]int
 
+func (authors *Authors) Check() {
+	for author, _ := range *authors {
+		author.Check()
+	}
+}
+
 func (authors *Authors) GetLinesStat() (int, int) {
 	total := 0
 	left := 0

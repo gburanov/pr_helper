@@ -40,3 +40,4 @@ settings.yml
 blacklist
 
 vendor/
+whitelist
