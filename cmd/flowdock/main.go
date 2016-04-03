@@ -62,9 +62,11 @@ func displayPR(pr *pr_helper.PR, service *flowdock.MessagesService) {
 func response(command string, service *flowdock.MessagesService) {
   num, err := strconv.Atoi(command)
   if err != nil {
+    message := "Cannot find PR " + command
+    sendMessage(message, service)
     return
   }
-
+  sendMessage("Analysis in progress", service)
   repo := pr_helper.NewRepository(organization, project, pr_helper.Token())
   displayPR(repo.GetPR(num), service)
 }
