@@ -43,7 +43,18 @@ func sendMessage(message string, service *flowdock.MessagesService) {
 func displayPR(pr *pr_helper.PR, service *flowdock.MessagesService) {
   sendMessage(pr.Topic(), service)
   sendMessage(pr.Url(), service)
-  for author, _ := range *pr.Authors() {
+  authors := *pr.Authors()
+
+  left, total := authors.GetLinesStat()
+  percent := float32(left)/float32(total)
+
+  str := fmt.Sprintf("%d out of %d unmantained", left, total)
+  sendMessage(str, service)
+  if (total > 100 && percent > 0.7) || (percent > 0.9) {
+    sendMessage("WARNING! DEEP LEGACY", service)
+  }
+
+  for author, _ := range *pr_helper.FilterTop(5, &authors) {
     sendMessage(author.AsStr(), service)
   }
 }
