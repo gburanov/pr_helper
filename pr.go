@@ -11,13 +11,22 @@ type PR struct {
 	Number     int
 }
 
-func (pr *PR) ShowInfo() string {
+func (pr *PR) Topic() string {
 	pr_, _, err := pr.Repository.Client.PullRequests.
 		Get(pr.Repository.Organization, pr.Repository.Project, pr.Number)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return *pr_.Title + " (#" + strconv.Itoa(pr.Number) + ")"
+}
+
+func (pr *PR) Url() string {
+	pr_, _, err := pr.Repository.Client.PullRequests.
+		Get(pr.Repository.Organization, pr.Repository.Project, pr.Number)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return *pr_.URL
 }
 
 func (pr *PR) Authors() *Authors {

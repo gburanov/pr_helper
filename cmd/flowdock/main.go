@@ -41,7 +41,8 @@ func sendMessage(message string, service *flowdock.MessagesService) {
 }
 
 func displayPR(pr *pr_helper.PR, service *flowdock.MessagesService) {
-  sendMessage(pr.ShowInfo(), service)
+  sendMessage(pr.Topic(), service)
+  sendMessage(pr.Url(), service)
   for author, _ := range *pr.Authors() {
     sendMessage(author.AsStr(), service)
   }

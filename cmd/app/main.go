@@ -46,7 +46,7 @@ func main() {
       Usage:     "Only PR titles",
       Action: func(c *cli.Context) {
         for _, pr := range repo.PRs() {
-          pr.ShowInfo()
+          pr.Topic()
         }
       },
     },
