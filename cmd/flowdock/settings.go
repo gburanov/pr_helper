@@ -11,7 +11,9 @@ import (
 const SettingsFile = "settings.yml"
 
 type Settings struct {
-	AuthToken      string
+	AuthToken string
+	StreamToken string
+	Flow string
 }
 
 func readFile(filename string) []byte {
