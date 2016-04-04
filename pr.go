@@ -2,7 +2,6 @@ package pr_helper
 
 import (
 	"log"
-	"strconv"
 	"strings"
 )
 
@@ -17,7 +16,7 @@ func (pr *PR) Topic() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return *pr_.Title + " (#" + strconv.Itoa(pr.Number) + ")"
+	return *pr_.Title
 }
 
 func (pr *PR) Url() string {
@@ -26,7 +25,7 @@ func (pr *PR) Url() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return *pr_.URL
+	return *pr_.HTMLURL
 }
 
 func (pr *PR) Authors() *Authors {

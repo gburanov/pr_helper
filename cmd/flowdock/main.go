@@ -4,6 +4,10 @@ import (
   "fmt"
   "log"
   "strconv"
+  "strings"
+
+  "encoding/base64"
+  "crypto/rand"
 
   "github.com/gburanov/go-flowdock/flowdock"
 
@@ -22,9 +26,23 @@ func main() {
   for {
     message := <- channel
     if *message.Event == "message" {
+      if message.UUID != nil && strings.HasPrefix(*message.UUID, "robot") {
+        continue
+      }
       response(message.Content().String(), client.Messages)
     }
   }
+}
+
+func randString() string {
+  size := 32 // change the length of the generated random string here
+  rb := make([]byte,size)
+  _, err := rand.Read(rb)
+  if err != nil {
+    log.Fatal(err)
+  }
+  rs := base64.URLEncoding.EncodeToString(rb)
+  return rs
 }
 
 func sendMessage(message string, service *flowdock.MessagesService) {
@@ -33,6 +51,7 @@ func sendMessage(message string, service *flowdock.MessagesService) {
     FlowID: GetSettings().Flow,
     Event: "message",
     Content: message,
+    UUID: "robot" + randString(),
   }
     _, _, err := service.Create(&fm)
     if err != nil {
@@ -48,15 +67,18 @@ func displayPR(pr *pr_helper.PR, service *flowdock.MessagesService) {
   left, total := authors.GetLinesStat()
   percent := float32(left)/float32(total)
 
-  str := fmt.Sprintf("%d out of %d unmantained", left, total)
+  str := fmt.Sprintf("%d lines out of %d lines unmaintained", left, total)
   sendMessage(str, service)
   if (total > 100 && percent > 0.7) || (percent > 0.9) {
     sendMessage("WARNING! DEEP LEGACY", service)
   }
 
+  authorsStr:= "Suggested authors for review "
   for author, _ := range *pr_helper.FilterTop(5, &authors) {
-    sendMessage(author.AsStr(), service)
+    authorsStr += author.Name
+    authorsStr += ", "
   }
+  sendMessage(authorsStr, service)
 }
 
 func response(command string, service *flowdock.MessagesService) {
@@ -66,7 +88,7 @@ func response(command string, service *flowdock.MessagesService) {
     sendMessage(message, service)
     return
   }
-  sendMessage("Analysis in progress", service)
+  sendMessage("Analysis in progress...", service)
   repo := pr_helper.NewRepository(organization, project, pr_helper.Token())
   displayPR(repo.GetPR(num), service)
 }
