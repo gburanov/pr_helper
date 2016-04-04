@@ -10,6 +10,12 @@ type PR struct {
 	Number     int
 }
 
+func (pr *PR) validate() error {
+	_, _, err := pr.Repository.Client.PullRequests.
+		Get(pr.Repository.Organization, pr.Repository.Project, pr.Number)
+	return err
+}
+
 func (pr *PR) Topic() string {
 	pr_, _, err := pr.Repository.Client.PullRequests.
 		Get(pr.Repository.Organization, pr.Repository.Project, pr.Number)

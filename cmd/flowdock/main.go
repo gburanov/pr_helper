@@ -59,7 +59,7 @@ func sendMessage(message string, service *flowdock.MessagesService) {
     }
 }
 
-func displayPR(pr *pr_helper.PR, service *flowdock.MessagesService) {
+func displayPR(pr pr_helper.PR, service *flowdock.MessagesService) {
   sendMessage(pr.Topic(), service)
   sendMessage(pr.Url(), service)
   authors := *pr.Authors()
@@ -90,5 +90,10 @@ func response(command string, service *flowdock.MessagesService) {
   }
   sendMessage("Analysis in progress...", service)
   repo := pr_helper.NewRepository(organization, project, pr_helper.Token())
-  displayPR(repo.GetPR(num), service)
+  pr, err := repo.GetPR(num)
+  if err != nil {
+    sendMessage(err.Error(), service)
+    return
+  }
+  displayPR(pr, service)
 }

@@ -26,8 +26,12 @@ func (repo *Repository) listPRsbyQuery(query string) []PR {
 		log.Fatal(err)
 	}
 	ret := []PR{}
-	for _, pr := range prs.Issues {
-		ret = append(ret, *repo.GetPR(*pr.Number))
+	for _, github_pr := range prs.Issues {
+		pr, err := repo.GetPR(*github_pr.Number)
+		if err != nil {
+			log.Fatal(err)
+		}
+		ret = append(ret, pr)
 	}
 	return ret
 }
@@ -42,9 +46,7 @@ func (repo *Repository) PRs() []PR {
 	return repo.listPRsbyQuery(query)
 }
 
-func (repo *Repository) GetPR(number int) *PR {
-	pr := new(PR)
-	pr.Repository = repo
-	pr.Number = number
-	return pr
+func (repo *Repository) GetPR(number int) (PR, error) {
+	pr := PR{Repository: repo, Number: number}
+	return pr, pr.validate()
 }
