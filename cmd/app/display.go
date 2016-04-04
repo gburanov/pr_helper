@@ -13,7 +13,7 @@ func displayAuthors(authors *pr_helper.Authors) {
   }
 }
 
-func displayPR(pr *pr_helper.PR) {
+func displayPR(pr pr_helper.PR) {
   red := color.New(color.FgRed, color.Bold)
   red.Println(pr.Topic())
   red.Println(pr.Url())

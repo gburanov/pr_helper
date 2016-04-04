@@ -3,6 +3,7 @@ package main
 import (
   "os"
   "fmt"
+  "log"
   "strconv"
   "github.com/codegangsta/cli"
 
@@ -35,7 +36,7 @@ func main() {
       Usage:     "All PRs",
       Action: func(c *cli.Context) {
         for _, pr := range repo.PRs() {
-          displayPR(&pr)
+          displayPR(pr)
           fmt.Println()
         }
       },
@@ -56,7 +57,7 @@ func main() {
       Usage:     "Mine PRs",
       Action: func(c *cli.Context) {
         for _, pr := range repo.MyPRs() {
-          displayPR(&pr)
+          displayPR(pr)
         }
       },
     },
@@ -66,7 +67,11 @@ func main() {
       Usage:     "PR by number",
       Action: func(c *cli.Context) {
         i, _ := strconv.Atoi(c.Args().First())
-        displayPR(repo.GetPR(i))
+        pr, err := repo.GetPR(i)
+        if err != nil {
+          log.Fatal(err)
+        }
+        displayPR(pr)
       },
     },
   }
