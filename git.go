@@ -3,9 +3,40 @@ package pr_helper
 import (
 	"github.com/fatih/color"
 	"log"
+	"os"
+	"fmt"
 	"os/exec"
 	"strings"
 )
+
+func exists(path string) (bool, error) {
+    _, err := os.Stat(path)
+    if err == nil { return true, nil }
+    if os.IsNotExist(err) { return false, nil }
+    return true, err
+}
+
+func GetRepositoryPath() string {
+	path := GetSettings().RepositoryPath
+	exist, err := exists(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if exist {
+		return path
+	}
+	// clone repo
+	os.Mkdir(GetSettings().RepositoryPath, 0777)
+	path = fmt.Sprintf("https://%s@github.com/wimdu/wimdu.git", GetSettings().AuthToken)
+	fmt.Println(path)
+	command := exec.Command("git", "clone", path)
+	command.Dir = GetSettings().RepositoryPath
+	err = command.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return path
+}
 
 var MyEmail = ""
 
@@ -15,7 +46,7 @@ func myEmail() string {
 	}
 
 	command := exec.Command("git", "config", "user.email")
-	command.Dir = GetSettings().RepositoryPath
+	command.Dir = GetRepositoryPath()
 	out, err := command.Output()
 	if err != nil {
 		log.Fatal(err)
@@ -26,7 +57,7 @@ func myEmail() string {
 
 func checkFileExist(fileName string) bool {
 	command := exec.Command("test", "-f", fileName)
-	command.Dir = GetSettings().RepositoryPath
+	command.Dir = GetRepositoryPath()
 	retCode := command.Run()
 	if retCode != nil {
 		if GetSettings().Verbosity {
@@ -49,7 +80,7 @@ func fileAuthors(fileName string) []Author {
 	}
 
 	command := exec.Command("git", "blame", "--line-porcelain", fileName)
-	command.Dir = GetSettings().RepositoryPath
+	command.Dir = GetRepositoryPath()
 
 	out, err := command.Output()
 	if err != nil {

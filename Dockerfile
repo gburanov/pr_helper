@@ -7,4 +7,5 @@ RUN apk --update upgrade && \
     rm -rf /var/cache/apk/*
 
 ADD app /
-CMD ["/app"]
+ADD settings.yml /
+CMD ["/app", "a"]
