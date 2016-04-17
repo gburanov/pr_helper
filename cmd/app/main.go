@@ -10,12 +10,8 @@ import (
   "pr_helper"
 )
 
-const organization = "wimdu"
-const project = "wimdu"
-const label = "codereview"
-
 func main() {
-  repo := pr_helper.NewRepository(organization, project, pr_helper.Token())
+  repo := pr_helper.RepositoryFromSettings()
 
   app := cli.NewApp()
   app.Name = "pr_helper"

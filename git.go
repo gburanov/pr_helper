@@ -9,6 +9,22 @@ import (
 	"strings"
 )
 
+func CreateRepository() {
+	err := os.MkdirAll(GetSettings().RepositoryPath, 0777)
+	if err != nil {
+		log.Fatal(err)
+	}
+	path := fmt.Sprintf("https://%s@github.com/%s/%s.git",
+		GetSettings().AuthToken, GetSettings().Organization, GetSettings().Project)
+	fmt.Println("Clonning", path)
+	command := exec.Command("git", "clone", path, ".")
+	command.Dir = GetSettings().RepositoryPath
+	err := command.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func exists(path string) (bool, error) {
     _, err := os.Stat(path)
     if err == nil { return true, nil }
@@ -25,16 +41,7 @@ func GetRepositoryPath() string {
 	if exist {
 		return path
 	}
-	// clone repo
-	os.Mkdir(GetSettings().RepositoryPath, 0777)
-	path = fmt.Sprintf("https://%s@github.com/wimdu/wimdu.git", GetSettings().AuthToken)
-	fmt.Println(path)
-	command := exec.Command("git", "clone", path)
-	command.Dir = GetSettings().RepositoryPath
-	err = command.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
+	CreateRepository()
 	return path
 }
 

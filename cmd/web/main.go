@@ -8,7 +8,7 @@ import (
 
 func showPrs() string {
   ret := ""
-  repo := pr_helper.NewRepository(pr_helper.GetSettings().Organization, pr_helper.GetSettings().Project, pr_helper.Token())
+  repo := pr_helper.RepositoryFromSettings()
   for _, pr := range repo.PRs() {
     ret += "<p>"
     ret += pr.Topic()
