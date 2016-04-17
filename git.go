@@ -10,7 +10,8 @@ import (
 )
 
 func CreateRepository() {
-	err := os.MkdirAll(GetSettings().RepositoryPath, 0777)
+	fmt.Println("Creating", GetSettings().RepositoryPath)
+	err := exec.Command("mkdir", "-p", GetSettings().RepositoryPath).Run()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -38,10 +39,12 @@ func GetRepositoryPath() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if exist {
-		return path
+	if !exist {
+		CreateRepository()
+	} else {
+		err := exec.Command("git", "status").Run()
+		if err != nil { CreateRepository() }
 	}
-	CreateRepository()
 	return path
 }
 

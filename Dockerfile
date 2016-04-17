@@ -12,3 +12,4 @@ RUN apk add git
 ADD app /
 ADD settings.yml /
 CMD ["/app", "a"]
+#CMD ["/bin/sh"]
