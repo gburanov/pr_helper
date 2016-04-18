@@ -24,14 +24,9 @@ func (repo *Repository) listPRsbyQuery(query string) []PR {
 		if err != nil {
 			log.Fatal(err)
 		}
-		ret = append(ret, pr)
+		ret = append(ret, *pr)
 	}
 	return ret
-}
-
-func (repo *Repository) MyPRs() []PR {
-	query := "is:open repo:" + repo.Organization + "/" + repo.Project + " label:" + GetSettings().Label + " author:gburanov"
-	return repo.listPRsbyQuery(query)
 }
 
 func (repo *Repository) PRs() []PR {
@@ -39,20 +34,20 @@ func (repo *Repository) PRs() []PR {
 	return repo.listPRsbyQuery(query)
 }
 
-func (repo *Repository) GetPR(number int) (PR, error) {
+func (repo *Repository) GetPR(number int) (*PR, error) {
 	pr := PR{Repository: repo, Number: number}
-	return pr, pr.validate()
+	return &pr, pr.validate()
 }
 
 func (repo *Repository) LocalPath() string {
 	return GetSettings().RepositoryPath + "/" + repo.Organization + "/" + repo.Project
 }
 
-func (repo *Repository) Init() {
+func (repo *Repository) Init() error {
 	path := repo.LocalPath()
 	exist, err := exists(path)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	if !exist {
 		repo.Create()
@@ -62,6 +57,10 @@ func (repo *Repository) Init() {
 		err := command.Run()
 		if err != nil { repo.Create() }
 	}
+	// Update repo
+	command := exec.Command("git", "pull")
+	command.Dir = repo.LocalPath()
+	return command.Run()
 }
 
 func (repo *Repository) Create() {

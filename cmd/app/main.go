@@ -49,16 +49,6 @@ func main() {
       },
     },
     {
-      Name:      "mine",
-      Aliases:     []string{"m"},
-      Usage:     "Mine PRs",
-      Action: func(c *cli.Context) {
-        for _, pr := range repo.MyPRs() {
-          displayPR(pr)
-        }
-      },
-    },
-    {
       Name:      "number",
       Aliases:     []string{"n"},
       Usage:     "PR by number",
@@ -68,7 +58,7 @@ func main() {
         if err != nil {
           log.Fatal(err)
         }
-        displayPR(pr)
+        displayPR(*pr)
       },
     },
     {
