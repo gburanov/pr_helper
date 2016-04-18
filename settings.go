@@ -36,5 +36,8 @@ func GetSettings() *Settings {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// Do some overrides
+	settings.AuthToken = os.GetEn("GITHUB_ACCESS_TOKEN")
 	return settings
 }

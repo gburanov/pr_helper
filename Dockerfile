@@ -9,10 +9,11 @@ RUN apk add curl ca-certificates && \
 
 RUN apk add git
 
-ADD app /
+ADD web /
 ADD blacklist /
 ADD whitelist /
+ADD cmd/web/index.gtpl cmd/web/index.gtpl
 ADD settings.yml /
 
 # temporary
-CMD ["/app", "a"]
+CMD ["/web", "a"]
