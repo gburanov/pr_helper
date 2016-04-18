@@ -37,6 +37,6 @@ func GetSettings() *Settings {
 
 	// Do some overrides
 	settings.AuthToken = os.Getenv("GITHUB_ACCESS_TOKEN")
-	settings.RepositoryPath = "/repository"
+	settings.RepositoryPath = "repository"
 	return settings
 }

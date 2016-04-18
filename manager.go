@@ -1,8 +1,6 @@
 package pr_helper
 
 import (
-	"net/http"
-
 	"github.com/google/go-github/github"
 )
 
@@ -10,8 +8,8 @@ type Manager struct {
   Client       *github.Client
 }
 
-func NewManager(auth_token *http.Client) *Manager {
-  return &Manager{Client: github.NewClient(auth_token)}
+func NewManager() *Manager {
+  return &Manager{Client: github.NewClient(Token())}
 }
 
 func (m *Manager) GetRepository(organization string, project string) *Repository {

@@ -3,6 +3,7 @@ package pr_helper
 import (
 	"github.com/google/go-github/github"
 	"log"
+	"fmt"
 	"os/exec"
 )
 
@@ -54,11 +55,28 @@ func (repo *Repository) Init() {
 		log.Fatal(err)
 	}
 	if !exist {
-		CreateRepository(repo.Organization, repo.Project)
+		repo.Create()
 	} else {
 		command := exec.Command("git", "status")
-		command.Dir = GetSettings().RepositoryPath
+		command.Dir = repo.LocalPath()
 		err := command.Run()
-		if err != nil { CreateRepository(repo.Organization, repo.Project) }
+		if err != nil { repo.Create() }
+	}
+}
+
+func (repo *Repository) Create() {
+	fmt.Println("Creating", repo.LocalPath())
+	err := exec.Command("mkdir", "-p", repo.LocalPath()).Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+	path := fmt.Sprintf("https://%s@github.com/%s/%s.git",
+		GetSettings().AuthToken, repo.Organization, repo.Project)
+	fmt.Println("Clonning", path)
+	command := exec.Command("git", "clone", path, ".")
+	command.Dir = repo.LocalPath()
+	err = command.Run()
+	if err != nil {
+		log.Fatal(err)
 	}
 }

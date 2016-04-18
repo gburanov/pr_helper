@@ -4,27 +4,9 @@ import (
 	"github.com/fatih/color"
 	"log"
 	"os"
-	"fmt"
 	"os/exec"
 	"strings"
 )
-
-func CreateRepository(organization string, project string) {
-	fmt.Println("Creating", GetSettings().RepositoryPath)
-	err := exec.Command("mkdir", "-p", GetSettings().RepositoryPath).Run()
-	if err != nil {
-		log.Fatal(err)
-	}
-	path := fmt.Sprintf("https://%s@github.com/%s/%s.git",
-		GetSettings().AuthToken, organization, project)
-	fmt.Println("Clonning", path)
-	command := exec.Command("git", "clone", path, ".")
-	command.Dir = GetSettings().RepositoryPath
-	err = command.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
-}
 
 func exists(path string) (bool, error) {
     _, err := os.Stat(path)

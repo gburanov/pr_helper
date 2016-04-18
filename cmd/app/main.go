@@ -11,7 +11,8 @@ import (
 )
 
 func main() {
-  repo := pr_helper.RepositoryFromSettings()
+  manager := pr_helper.NewManager()
+  repo := manager.GetRepository("wimdu", "wimdu")
 
   app := cli.NewApp()
   app.Name = "pr_helper"
