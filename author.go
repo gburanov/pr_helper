@@ -12,7 +12,7 @@ type Author struct {
 }
 
 func (author *Author) AsStr() string {
-	return author.Name + " <" + author.Email + ">"
+	return fmt.Sprintf("%s %s", author.Name, author.Email)
 }
 
 var Blacklist *map[string]bool

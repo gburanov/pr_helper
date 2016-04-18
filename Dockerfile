@@ -10,6 +10,8 @@ RUN apk add curl ca-certificates && \
 RUN apk add git
 
 ADD app /
+ADD blacklist /
+ADD whitelist /
 ADD settings.yml /
 
 # temporary
