@@ -9,20 +9,6 @@ import (
 type Repository struct {
 	Organization string
 	Project      string
-	Client       *github.Client
-}
-
-func newRepository(organization string, project string, auth_token *http.Client) *Repository {
-	repo := new(Repository)
-	repo.Organization = organization
-	repo.Project = project
-	repo.Client = github.NewClient(auth_token)
-	GetRepositoryPath()
-	return repo
-}
-
-func RepositoryFromSettings() *Repository {
-	return newRepository(GetSettings().Organization, GetSettings().Project, Token())
 }
 
 func (repo *Repository) listPRsbyQuery(query string) []PR {

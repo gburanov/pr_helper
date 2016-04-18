@@ -9,14 +9,14 @@ import (
 	"strings"
 )
 
-func CreateRepository() {
+func CreateRepository(organization string, project string) {
 	fmt.Println("Creating", GetSettings().RepositoryPath)
 	err := exec.Command("mkdir", "-p", GetSettings().RepositoryPath).Run()
 	if err != nil {
 		log.Fatal(err)
 	}
 	path := fmt.Sprintf("https://%s@github.com/%s/%s.git",
-		GetSettings().AuthToken, GetSettings().Organization, GetSettings().Project)
+		GetSettings().AuthToken, organization, project)
 	fmt.Println("Clonning", path)
 	command := exec.Command("git", "clone", path, ".")
 	command.Dir = GetSettings().RepositoryPath
@@ -33,19 +33,19 @@ func exists(path string) (bool, error) {
     return true, err
 }
 
-func GetRepositoryPath() string {
-	path := GetSettings().RepositoryPath
+func GetRepositoryPath(organization string, repo string) string {
+	path := GetSettings().RepositoryPath + "/" + organization + "/" + repo
 	exist, err := exists(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 	if !exist {
-		CreateRepository()
+		CreateRepository(organization, repo)
 	} else {
 		command := exec.Command("git", "status")
 		command.Dir = GetSettings().RepositoryPath
 		err := command.Run()
-		if err != nil { CreateRepository() }
+		if err != nil { CreateRepository(organization, repo) }
 	}
 	return path
 }

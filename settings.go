@@ -13,8 +13,6 @@ const SettingsFile = "settings.yml"
 type Settings struct {
 	AuthToken      string
 	RepositoryPath string
-	Organization   string
-	Project        string
 	Verbosity      bool
 	Label          string
 }
@@ -39,6 +37,6 @@ func GetSettings() *Settings {
 
 	// Do some overrides
 	settings.AuthToken = os.Getenv("GITHUB_ACCESS_TOKEN")
-	settings.RepositoryPath = "/tmp/pr_helper"
+	settings.RepositoryPath = "/repository"
 	return settings
 }
