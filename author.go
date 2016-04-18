@@ -2,7 +2,6 @@ package pr_helper
 
 import (
 	"io/ioutil"
-	"log"
 	"strings"
 	"fmt"
 )
@@ -16,35 +15,39 @@ func (author *Author) AsStr() string {
 	return author.Name + " <" + author.Email + ">"
 }
 
-var Blacklist = map[string]bool{}
-var Whitelist = map[string]bool{}
+var Blacklist *map[string]bool
+var Whitelist *map[string]bool
 
 func blacklist() map[string]bool {
-	if len(Blacklist) == 0 {
+	if Blacklist == nil {
+		Blacklist = &map[string]bool{}
 		content, err := ioutil.ReadFile("blacklist")
 		if err != nil {
-			log.Fatal(err)
+			//log.Fatal(err)
+			return *Blacklist
 		}
 		lines := strings.Split(string(content), "\n")
 		for _, line := range lines {
-			Blacklist[line] = true
+			(*Blacklist)[line] = true
 		}
 	}
-	return Blacklist
+	return *Blacklist
 }
 
 func whitelist() map[string]bool {
-	if len(Whitelist) == 0 {
+	if Whitelist == nil {
+		Whitelist = &map[string]bool{}
 		content, err := ioutil.ReadFile("whitelist")
 		if err != nil {
-			log.Fatal(err)
+			return *Whitelist
+			//log.Fatal(err)
 		}
 		lines := strings.Split(string(content), "\n")
 		for _, line := range lines {
-			Whitelist[line] = true
+			(*Whitelist)[line] = true
 		}
 	}
-	return Whitelist
+	return *Whitelist
 }
 
 func (author *Author) Check() bool {
