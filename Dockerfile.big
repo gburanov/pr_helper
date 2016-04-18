@@ -1,0 +1,18 @@
+FROM ubuntu:14.04
+
+# update
+RUN apt-get update
+
+# need them to connect to AWS
+RUN apt-get -y install curl ca-certificates && \
+    update-ca-certificates
+
+RUN apt-get -y install git
+
+ADD app /
+ADD settings.yml /
+
+# temporary
+CMD ["mkdir", "-p", "/Users/gburanov/code/wissmdu"]
+CMD ["/app", "a"]
+#CMD ["/bin/sh"]

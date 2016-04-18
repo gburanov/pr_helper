@@ -20,7 +20,7 @@ func CreateRepository() {
 	fmt.Println("Clonning", path)
 	command := exec.Command("git", "clone", path, ".")
 	command.Dir = GetSettings().RepositoryPath
-	err := command.Run()
+	err = command.Run()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,7 +42,9 @@ func GetRepositoryPath() string {
 	if !exist {
 		CreateRepository()
 	} else {
-		err := exec.Command("git", "status").Run()
+		command := exec.Command("git", "status")
+		command.Dir = GetSettings().RepositoryPath
+		err := command.Run()
 		if err != nil { CreateRepository() }
 	}
 	return path
