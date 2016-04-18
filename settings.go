@@ -38,6 +38,7 @@ func GetSettings() *Settings {
 	}
 
 	// Do some overrides
-	settings.AuthToken = os.GetEn("GITHUB_ACCESS_TOKEN")
+	settings.AuthToken = os.Getenv("GITHUB_ACCESS_TOKEN")
+	settings.RepositoryPath = "/tmp/pr_helper"
 	return settings
 }
