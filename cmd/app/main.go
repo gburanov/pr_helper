@@ -16,7 +16,7 @@ func main() {
 
   app := cli.NewApp()
   app.Name = "pr_helper"
-  app.Usage = "Helps to find correct gut for PR!"
+  app.Usage = "Helps to find correct reviewer for PR!"
   app.EnableBashCompletion = true
 
   app.Flags = []cli.Flag {
@@ -69,6 +69,19 @@ func main() {
           log.Fatal(err)
         }
         displayPR(pr)
+      },
+    },
+    {
+      Name:      "url",
+      Aliases:     []string{"u"},
+      Usage:     "PR by URL",
+      Action: func(c *cli.Context) {
+        url := c.Args().First()
+        pr, err := manager.GetPR(url)
+        if err != nil {
+          log.Fatal(err)
+        }
+        displayPR(*pr)
       },
     },
   }
