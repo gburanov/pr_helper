@@ -33,25 +33,8 @@ func exists(path string) (bool, error) {
     return true, err
 }
 
-func GetRepositoryPath(organization string, repo string) string {
-	path := GetSettings().RepositoryPath + "/" + organization + "/" + repo
-	exist, err := exists(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if !exist {
-		CreateRepository(organization, repo)
-	} else {
-		command := exec.Command("git", "status")
-		command.Dir = GetSettings().RepositoryPath
-		err := command.Run()
-		if err != nil { CreateRepository(organization, repo) }
-	}
-	return path
-}
-
+/*
 var MyEmail = ""
-
 func myEmail() string {
 	if MyEmail != "" {
 		return MyEmail
@@ -66,10 +49,11 @@ func myEmail() string {
 	MyEmail = strings.TrimSuffix(string(out), "\n")
 	return MyEmail
 }
+*/
 
-func checkFileExist(fileName string) bool {
+func checkFileExist(repo *Repository, fileName string) bool {
 	command := exec.Command("test", "-f", fileName)
-	command.Dir = GetRepositoryPath()
+	command.Dir = repo.LocalPath()
 	retCode := command.Run()
 	if retCode != nil {
 		if GetSettings().Verbosity {
@@ -81,18 +65,18 @@ func checkFileExist(fileName string) bool {
 	return true
 }
 
-func fileAuthors(fileName string) []Author {
+func fileAuthors(repo *Repository, fileName string) []Author {
 	if GetSettings().Verbosity {
 		yellow := color.New(color.FgYellow)
 		yellow.Println("Analyzing file ", fileName)
 	}
 	authors := []Author{}
-	if checkFileExist(fileName) == false {
+	if checkFileExist(repo, fileName) == false {
 		return authors
 	}
 
 	command := exec.Command("git", "blame", "--line-porcelain", fileName)
-	command.Dir = GetRepositoryPath()
+	command.Dir = repo.LocalPath()
 
 	out, err := command.Output()
 	if err != nil {

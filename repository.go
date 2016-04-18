@@ -3,12 +3,13 @@ package pr_helper
 import (
 	"github.com/google/go-github/github"
 	"log"
-	"net/http"
+	"os/exec"
 )
 
 type Repository struct {
 	Organization string
 	Project      string
+  Client       *github.Client
 }
 
 func (repo *Repository) listPRsbyQuery(query string) []PR {
@@ -40,4 +41,24 @@ func (repo *Repository) PRs() []PR {
 func (repo *Repository) GetPR(number int) (PR, error) {
 	pr := PR{Repository: repo, Number: number}
 	return pr, pr.validate()
+}
+
+func (repo *Repository) LocalPath() string {
+	return GetSettings().RepositoryPath + "/" + repo.Organization + "/" + repo.Project
+}
+
+func (repo *Repository) Init() {
+	path := repo.LocalPath()
+	exist, err := exists(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if !exist {
+		CreateRepository(repo.Organization, repo.Project)
+	} else {
+		command := exec.Command("git", "status")
+		command.Dir = GetSettings().RepositoryPath
+		err := command.Run()
+		if err != nil { CreateRepository(repo.Organization, repo.Project) }
+	}
 }

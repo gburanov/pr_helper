@@ -1,6 +1,8 @@
 package pr_helper
 
 import (
+	"net/http"
+
 	"github.com/google/go-github/github"
 )
 
@@ -17,6 +19,6 @@ func (m *Manager) GetRepository(organization string, project string) *Repository
   repo.Organization = organization
   repo.Project = project
   repo.Client = m.Client
-  GetRepositoryPath(repo)
+  repo.Init()
   return repo
 }

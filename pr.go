@@ -48,9 +48,9 @@ func (pr *PR) Authors() *Authors {
 			continue
 		}
 		results++
-		go func(fileName string) {
-			authors_channel <- fileAuthors(fileName)
-		}(*file.Filename)
+		go func(pr *PR, fileName string) {
+			authors_channel <- fileAuthors(pr.Repository, fileName)
+		}(pr, *file.Filename)
 	}
 	authors := []Author{}
 	for i := 1; i <= results; i++ {

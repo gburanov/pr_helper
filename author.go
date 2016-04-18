@@ -63,5 +63,5 @@ func (author *Author) AtWimdu() bool {
 }
 
 func (author *Author) filtered() bool {
-	return !author.AtWimdu() || author.Email == myEmail()
+	return !author.AtWimdu() //|| author.Email == myEmail()
 }
