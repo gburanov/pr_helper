@@ -9,10 +9,14 @@ import (
 
 type Manager struct {
   Client       *github.Client
+	Cb Callback
 }
 
-func NewManager() *Manager {
-  return &Manager{Client: github.NewClient(Token())}
+func NewManager(cb Callback) *Manager {
+  return &Manager{
+		Client: github.NewClient(Token()),
+		Cb: cb,
+	}
 }
 
 func (m *Manager) GetRepository(organization string, project string) (*Repository, error) {
@@ -20,7 +24,7 @@ func (m *Manager) GetRepository(organization string, project string) (*Repositor
   repo.Organization = organization
   repo.Project = project
   repo.Client = m.Client
-  err := repo.Init()
+  err := repo.Init(m.Cb)
 	if err != nil {
 		return nil, err
 	}

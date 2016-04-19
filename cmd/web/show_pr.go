@@ -35,8 +35,8 @@ func showAuthors(pr pr_helper.PR) string {
   ret := ""
   authors := pr.Authors()
   ret += showLeftStats(authors)
-  for author, _ := range *authors {
-    ret += "<p>" + author.AsStr()
+  for author, lines := range *pr_helper.FilterTop(5, authors) {
+    ret += fmt.Sprintf("<p> %s [%d]", author.AsStr(), lines)
   }
   return ret
 }

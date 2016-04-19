@@ -43,19 +43,19 @@ func (repo *Repository) LocalPath() string {
 	return GetSettings().RepositoryPath + "/" + repo.Organization + "/" + repo.Project
 }
 
-func (repo *Repository) Init() error {
+func (repo *Repository) Init(cb Callback) error {
 	path := repo.LocalPath()
 	exist, err := exists(path)
 	if err != nil {
 		return err
 	}
 	if !exist {
-		repo.Create()
+		repo.Create(cb)
 	} else {
 		command := exec.Command("git", "status")
 		command.Dir = repo.LocalPath()
 		err := command.Run()
-		if err != nil { repo.Create() }
+		if err != nil { repo.Create(cb) }
 	}
 	// Update repo
 	command := exec.Command("git", "pull")
@@ -63,15 +63,14 @@ func (repo *Repository) Init() error {
 	return command.Run()
 }
 
-func (repo *Repository) Create() {
-	fmt.Println("Creating", repo.LocalPath())
+func (repo *Repository) Create(cb Callback) {
+	cb("Creating %s", repo.LocalPath())
 	err := exec.Command("mkdir", "-p", repo.LocalPath()).Run()
 	if err != nil {
 		log.Fatal(err)
 	}
 	path := fmt.Sprintf("https://%s@github.com/%s/%s.git",
 		GetSettings().AuthToken, repo.Organization, repo.Project)
-	fmt.Println("Clonning", path)
 	command := exec.Command("git", "clone", path, ".")
 	command.Dir = repo.LocalPath()
 	err = command.Run()
