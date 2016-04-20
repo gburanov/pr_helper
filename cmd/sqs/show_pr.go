@@ -1,7 +1,7 @@
 package main
 
 import (
-  "pr_helper"
+  "pr_helper/lib"
 )
 
 func showPr(url string, cb pr_helper.Callback, m *pr_helper.Mutex) {

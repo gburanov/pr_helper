@@ -2,7 +2,7 @@ package main
 
 import (
   "fmt"
-  "pr_helper"
+  "pr_helper/lib"
   "log"
 )
 
