@@ -8,8 +8,8 @@ import (
 
 func (repo *Repository) ExecuteSilently(name string, arg ...string) error {
   command := exec.Command(name, arg...)
-  _, error := command.Output()
-  return error
+  command.Dir = repo.LocalPath()
+  return command.Run()
 }
 
 func (repo *Repository) ExecuteCommand(name string, arg ...string) error {
