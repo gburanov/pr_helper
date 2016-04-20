@@ -38,6 +38,7 @@ func (m *Manager) GetRepository(organization string, project string) (*Repositor
 	}
   err := repo.Init(m.Cb)
 	m.M.Unlock()
+	fmt.Println("Unlocked back")
 	if err != nil {
 		return nil, err
 	}
