@@ -8,6 +8,10 @@ func (authors *Authors) Check() {
 	}
 }
 
+func CreateAuthors(stats Stats) *Authors {
+	return arrayToMap(stats.Authors())
+}
+
 func (authors *Authors) GetLinesStat() (int, int) {
 	total := 0
 	left := 0

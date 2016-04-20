@@ -34,7 +34,7 @@ func (pr *PR) Url() string {
 	return *pr_.HTMLURL
 }
 
-func (pr *PR) Authors() *Authors {
+func (pr *PR) Stats() Stats {
 	files, _, err := pr.Repository.Client.PullRequests.
 		ListFiles(pr.Repository.Organization, pr.Repository.Project, pr.Number, nil)
 	if err != nil {
@@ -42,19 +42,20 @@ func (pr *PR) Authors() *Authors {
 	}
 
 	results := 0
-	authors_channel := make(chan []Author)
+	stats_channel := make(chan Stats)
 	for _, file := range files {
 		if strings.HasPrefix(*file.Filename, "phrase") {
 			continue
 		}
 		results++
 		go func(pr *PR, fileName string) {
-			authors_channel <- fileAuthors(pr.Repository, fileName)
+			stats_channel <- fileStatistics(pr.Repository, fileName)
 		}(pr, *file.Filename)
 	}
-	authors := []Author{}
+	stats := Stats{}
 	for i := 1; i <= results; i++ {
-		authors = append(authors, <-authors_channel...)
+		stats = append(stats, <-stats_channel...)
 	}
-	return arrayToMap(authors)
+	return stats
+	//return arrayToMap(stats.Authors())
 }

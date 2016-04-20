@@ -27,7 +27,9 @@ func showLeftStats(authors *pr_helper.Authors, cb pr_helper.Callback) {
 }
 
 func showAuthors(pr pr_helper.PR, cb pr_helper.Callback) {
-  authors := pr.Authors()
+  stats := pr.Stats()
+  cb("Average time %s", stats.AverageTime().String())
+  authors := pr_helper.CreateAuthors(stats)
   showLeftStats(authors, cb)
   for author, lines := range *pr_helper.FilterTop(5, authors) {
     cb("%s [%d]", author.AsStr(), lines)
