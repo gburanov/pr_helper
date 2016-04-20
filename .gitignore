@@ -41,3 +41,5 @@ blacklist
 
 vendor/
 whitelist
+
+repository

@@ -6,9 +6,9 @@ import (
   "log"
 )
 
-func ProcessUrl(url string, cb pr_helper.Callback) {
-  fmt.Println("Processing url", url)
-  showPr(url, cb)
+func ProcessUrl(url string, cb pr_helper.Callback, m *pr_helper.Mutex) {
+  showPr(url, cb, m)
+  cb("END OF MESSAGE")
 }
 
 func messageCallback(uuid string) pr_helper.Callback {
@@ -21,6 +21,7 @@ func messageCallback(uuid string) pr_helper.Callback {
 
 func main() {
   log.SetFlags(log.LstdFlags | log.Lshortfile)
+  m := pr_helper.NewMutex()
 
   for {
     message := ReadMessage()
@@ -35,8 +36,7 @@ func main() {
       fmt.Println("Invalid message processed")
     } else {
       callback := messageCallback(uuid)
-      ProcessUrl(message.Body, callback)
-      callback("END OF MESSAGE")
+      go ProcessUrl(message.Body, callback, m)
     }
     DeleteMessage(message)
   }

@@ -4,27 +4,40 @@ import (
 	"strings"
 	"errors"
 	"strconv"
+	"time"
 	"github.com/google/go-github/github"
 )
 
 type Manager struct {
   Client       *github.Client
 	Cb Callback
+	M Mutex
 }
 
-func NewManager(cb Callback) *Manager {
+func NewManager(cb Callback, m *Mutex) *Manager {
   return &Manager{
 		Client: github.NewClient(Token()),
 		Cb: cb,
+		M: *m,
 	}
 }
 
 func (m *Manager) GetRepository(organization string, project string) (*Repository, error) {
-  repo := new(Repository)
-  repo.Organization = organization
-  repo.Project = project
-  repo.Client = m.Client
+  repo := &Repository{
+		Organization: organization,
+		Project: project,
+		Client: m.Client,
+	}
+	m.Cb("Trying to lock repository...")
+	locked := m.M.TryLock(time.Second * 10)
+	if locked == false {
+		m.Cb("Failed to lock please try again later")
+		return nil, errors.New("Locked repository")
+	} else {
+		m.Cb("Locked succesfully")
+	}
   err := repo.Init(m.Cb)
+	m.M.Unlock()
 	if err != nil {
 		return nil, err
 	}

@@ -4,9 +4,9 @@ import (
   "pr_helper"
 )
 
-func showPr(url string, cb pr_helper.Callback) {
+func showPr(url string, cb pr_helper.Callback, m *pr_helper.Mutex) {
   cb("Analyzing pr %s", url)
-  manager := pr_helper.NewManager(cb)
+  manager := pr_helper.NewManager(cb, m)
   pr, err := manager.GetPR(url)
   if err != nil {
     cb(err.Error())

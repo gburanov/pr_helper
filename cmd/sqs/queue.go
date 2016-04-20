@@ -2,6 +2,7 @@ package main
 
 import (
   "log"
+  "fmt"
 
   "github.com/goamz/goamz/aws"
   "github.com/goamz/goamz/sqs"
@@ -13,6 +14,7 @@ func ReadMessage() sqs.Message {
   if err != nil {
     log.Fatal(err)
   }
+  fmt.Println("Wainting for messages...")
   for {
     resp, err := q.ReceiveMessage(1)
     if err != nil {

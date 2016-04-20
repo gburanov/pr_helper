@@ -43,6 +43,10 @@ func (repo *Repository) LocalPath() string {
 	return GetSettings().RepositoryPath + "/" + repo.Organization + "/" + repo.Project
 }
 
+func (repo *Repository) RootPath() string {
+	return GetSettings().RepositoryPath + "/" + repo.Organization
+}
+
 func (repo *Repository) Init(cb Callback) error {
 	path := repo.LocalPath()
 	exist, err := exists(path)
@@ -65,15 +69,23 @@ func (repo *Repository) Init(cb Callback) error {
 
 func (repo *Repository) Create(cb Callback) {
 	cb("Creating %s...", repo.LocalPath())
-	err := exec.Command("mkdir", "-p", repo.LocalPath()).Run()
+	err := exec.Command("mkdir", "-p", repo.RootPath()).Run()
 	if err != nil {
 		log.Fatal(err)
 	}
+	// Remove subdirectory
+	command := exec.Command("rm", "-rf", repo.Project)
+	command.Dir = repo.RootPath()
+	err = command.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	path := fmt.Sprintf("https://%s@github.com/%s/%s.git",
 		GetSettings().AuthToken, repo.Organization, repo.Project)
 	fmt.Println("git clone %s",path)
-	command := exec.Command("git", "clone", path, ".")
-	command.Dir = repo.LocalPath()
+	command = exec.Command("git", "clone", path)
+	command.Dir = repo.RootPath()
 	err = command.Run()
 	if err != nil {
 		log.Fatal(err)
