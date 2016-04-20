@@ -69,14 +69,12 @@ func (repo *Repository) Init(cb Callback) error {
 
 func (repo *Repository) Create(cb Callback) {
 	cb("Creating %s...", repo.LocalPath())
-	err := exec.Command("mkdir", "-p", repo.RootPath()).Run()
+	err := repo.ExecuteCommandInDir("", "mkdir", "-p", repo.RootPath())
 	if err != nil {
 		log.Fatal(err)
 	}
 	// Remove subdirectory
-	command := exec.Command("rm", "-rf", repo.Project)
-	command.Dir = repo.RootPath()
-	err = command.Run()
+	err = repo.ExecuteCommandInDir(repo.RootPath(), "rm", "-rf", repo.Project)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -84,9 +82,7 @@ func (repo *Repository) Create(cb Callback) {
 	path := fmt.Sprintf("https://%s@github.com/%s/%s.git",
 		GetSettings().AuthToken, repo.Organization, repo.Project)
 	fmt.Println("git clone %s",path)
-	command = exec.Command("git", "clone", path)
-	command.Dir = repo.RootPath()
-	err = command.Run()
+	err = repo.ExecuteCommandInDir(repo.RootPath(), "git", "clone", path)
 	if err != nil {
 		log.Fatal(err)
 	}

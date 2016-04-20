@@ -18,10 +18,8 @@ func exists(path string) (bool, error) {
 }
 
 func checkFileExist(repo *Repository, fileName string) bool {
-	command := exec.Command("test", "-f", fileName)
-	command.Dir = repo.LocalPath()
-	retCode := command.Run()
-	if retCode != nil {
+	error := repo.ExecuteCommand("test", "-f", fileName)
+	if error != nil {
 		if GetSettings().Verbosity {
 			red := color.New(color.FgRed)
 			red.Println(fileName, "not found")
