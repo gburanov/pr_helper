@@ -64,13 +64,14 @@ func (repo *Repository) Init(cb Callback) error {
 }
 
 func (repo *Repository) Create(cb Callback) {
-	cb("Creating %s", repo.LocalPath())
+	cb("Creating %s...", repo.LocalPath())
 	err := exec.Command("mkdir", "-p", repo.LocalPath()).Run()
 	if err != nil {
 		log.Fatal(err)
 	}
 	path := fmt.Sprintf("https://%s@github.com/%s/%s.git",
 		GetSettings().AuthToken, repo.Organization, repo.Project)
+	fmt.Println("git clone %s",path)
 	command := exec.Command("git", "clone", path, ".")
 	command.Dir = repo.LocalPath()
 	err = command.Run()

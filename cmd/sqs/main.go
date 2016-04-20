@@ -3,6 +3,7 @@ package main
 import (
   "fmt"
   "pr_helper"
+  "log"
 )
 
 func ProcessUrl(url string, cb pr_helper.Callback) {
@@ -13,11 +14,14 @@ func ProcessUrl(url string, cb pr_helper.Callback) {
 func messageCallback(uuid string) pr_helper.Callback {
     return func(str string, args ...interface{}) {
         message := fmt.Sprintf(str, args...)
+        fmt.Println(message)
         SendMessage(message, uuid)
     }
 }
 
 func main() {
+  log.SetFlags(log.LstdFlags | log.Lshortfile)
+
   for {
     message := ReadMessage()
     var uuid string
