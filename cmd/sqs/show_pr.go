@@ -32,11 +32,13 @@ func showLeftStats(authors *pr_helper.Authors, cb pr_helper.Callback) {
 
 func showAuthors(pr pr_helper.PR, cb pr_helper.Callback) {
   stats := pr.Stats()
+  cb("Total files %d", stats.FilesCount)
+  cb("Total lines %d", stats.Lines())
   cb("Average time %s", stats.AverageTime().String())
   cb("Earliest time %s", stats.EarliestTime().String())
   authors := pr_helper.CreateAuthors(stats)
   showLeftStats(authors, cb)
   for author, lines := range *pr_helper.FilterTop(5, authors) {
-    cb("%s [%d]", author.AsStr(), lines)
+    cb("%s (%d lines changed)", author.AsStr(), lines)
   }
 }

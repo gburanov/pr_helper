@@ -42,7 +42,7 @@ func (pr *PR) Stats() Stats {
 	}
 
 	results := 0
-	stats_channel := make(chan Stats)
+	stats_channel := make(chan []Stat)
 	for _, file := range files {
 		if strings.HasPrefix(*file.Filename, "phrase") {
 			continue
@@ -52,9 +52,9 @@ func (pr *PR) Stats() Stats {
 			stats_channel <- fileStatistics(pr.Repository, fileName)
 		}(pr, *file.Filename)
 	}
-	stats := Stats{}
+	stats := []Stat{}
 	for i := 1; i <= results; i++ {
 		stats = append(stats, <-stats_channel...)
 	}
-	return stats
+	return Stats{Stats: stats, FilesCount: results}
 }

@@ -18,7 +18,7 @@ func exists(path string) (bool, error) {
 }
 
 func checkFileExist(repo *Repository, fileName string) bool {
-	error := repo.ExecuteCommand("test", "-f", fileName)
+	error := repo.ExecuteSilently("test", "-f", fileName)
 	if error != nil {
 		if GetSettings().Verbosity {
 			red := color.New(color.FgRed)
@@ -29,12 +29,12 @@ func checkFileExist(repo *Repository, fileName string) bool {
 	return true
 }
 
-func fileStatistics(repo *Repository, fileName string) Stats {
+func fileStatistics(repo *Repository, fileName string) []Stat {
 	if GetSettings().Verbosity {
 		yellow := color.New(color.FgYellow)
 		yellow.Println("Analyzing file ", fileName)
 	}
-	stats := Stats{}
+	stats := []Stat{}
 	if checkFileExist(repo, fileName) == false {
 		return stats
 	}

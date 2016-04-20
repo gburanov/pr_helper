@@ -80,8 +80,7 @@ func (repo *Repository) Create(cb Callback) {
 	}
 
 	path := fmt.Sprintf("https://%s@github.com/%s/%s.git",
-		GetSettings().AuthToken, repo.Organization, repo.Project)
-	fmt.Println("git clone %s",path)
+	GetSettings().AuthToken, repo.Organization, repo.Project)
 	err = repo.ExecuteCommandInDir(repo.RootPath(), "git", "clone", path)
 	if err != nil {
 		log.Fatal(err)
