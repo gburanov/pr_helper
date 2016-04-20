@@ -57,5 +57,4 @@ func (pr *PR) Stats() Stats {
 		stats = append(stats, <-stats_channel...)
 	}
 	return stats
-	//return arrayToMap(stats.Authors())
 }

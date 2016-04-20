@@ -19,6 +19,10 @@ func showPr(url string, cb pr_helper.Callback, m *pr_helper.Mutex) {
 func showLeftStats(authors *pr_helper.Authors, cb pr_helper.Callback) {
   left, total := authors.GetLinesStat()
   percent := float32(left)/float32(total)
+  if left == 0 {
+    // does not make sense
+    return
+  }
 
   cb("%d out of %d lines unmntained", left, total)
   if (total > 100 && percent > 0.7) || (percent > 0.9) {
@@ -29,6 +33,7 @@ func showLeftStats(authors *pr_helper.Authors, cb pr_helper.Callback) {
 func showAuthors(pr pr_helper.PR, cb pr_helper.Callback) {
   stats := pr.Stats()
   cb("Average time %s", stats.AverageTime().String())
+  cb("Earliest time %s", stats.EarliestTime().String())
   authors := pr_helper.CreateAuthors(stats)
   showLeftStats(authors, cb)
   for author, lines := range *pr_helper.FilterTop(5, authors) {

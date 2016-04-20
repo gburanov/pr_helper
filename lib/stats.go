@@ -19,6 +19,16 @@ func (stats *Stats) Authors() []Author {
   return ret
 }
 
+func (stats *Stats) EarliestTime() time.Time {
+  var lowest time.Time = time.Now()
+  for _, stat := range *stats {
+    if stat.Time.Unix() < lowest.Unix() {
+      lowest = stat.Time
+    }
+  }
+  return lowest
+}
+
 func (stats *Stats) AverageTime() time.Time {
   var sum int64
   count := 0
