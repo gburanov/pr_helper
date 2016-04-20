@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x #echo on
 
-rm web
-GOOS=linux go build pr_helper/cmd/web
+rm sqs
+GOOS=linux go build pr_helper/cmd/sqs
 docker build -t pr_helper .
