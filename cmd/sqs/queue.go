@@ -14,11 +14,12 @@ func ReadMessage() sqs.Message {
   if err != nil {
     log.Fatal(err)
   }
-  fmt.Println("Wainting for messages...")
+  fmt.Println("Waiting for messages...")
   for {
     resp, err := q.ReceiveMessage(1)
     if err != nil {
-      log.Fatal(err)
+      log.Print(err)
+      continue
     }
     if len(resp.Messages) != 0 {
       return resp.Messages[0]
