@@ -1,0 +1,64 @@
+{
+	"ImportPath": "pr_helper/cmd/sqs",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v60",
+	"Deps": [
+		{
+			"ImportPath": "github.com/fatih/color",
+			"Comment": "v0.1-17-g533cd7f",
+			"Rev": "533cd7fd8a85905f67a1753afb4deddc85ea174f"
+		},
+		{
+			"ImportPath": "github.com/goamz/goamz/aws",
+			"Rev": "02d5144a587b982e33b95f484a34164ce6923c99"
+		},
+		{
+			"ImportPath": "github.com/goamz/goamz/sqs",
+			"Rev": "02d5144a587b982e33b95f484a34164ce6923c99"
+		},
+		{
+			"ImportPath": "github.com/google/go-github/github",
+			"Rev": "a4d01b49cb5a7638d42d7f3648a30621936b85d8"
+		},
+		{
+			"ImportPath": "github.com/google/go-querystring/query",
+			"Rev": "6bb77fe6f42b85397288d4f6f67ac72f8f400ee7"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-colorable",
+			"Rev": "9cbef7c35391cca05f15f8181dc0b18bc9736dbb"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-isatty",
+			"Rev": "56b76bdf51f7708750eac80fa38b952bb9f32639"
+		},
+		{
+			"ImportPath": "github.com/vaughan0/go-ini",
+			"Rev": "a98ad7ee00ec53921f08832bc06ecf7fd600e6a1"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "4876518f9e71663000c348837735820161a42df7"
+		},
+		{
+			"ImportPath": "golang.org/x/oauth2",
+			"Rev": "2897dcade18a126645f1368de827f1e613a60049"
+		},
+		{
+			"ImportPath": "golang.org/x/oauth2/internal",
+			"Rev": "2897dcade18a126645f1368de827f1e613a60049"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "320cb01ddbbf0473674c2585f9b6e245721de355"
+		},
+		{
+			"ImportPath": "gopkg.in/yaml.v2",
+			"Rev": "a83829b6f1293c91addabc89d0571c246397bbf4"
+		},
+		{
+			"ImportPath": "pr_helper/lib",
+			"Rev": "008a1de8fbfdf324939ff405ef841dfadfcd890a"
+		}
+	]
+}
