@@ -1,12 +1,16 @@
 {
-	"ImportPath": "pr_helper/cmd/sqs",
+	"ImportPath": "github.com/gburanov/pr_helper/cmd/sqs",
 	"GoVersion": "go1.6",
-	"GodepVersion": "v60",
+	"GodepVersion": "v74",
 	"Deps": [
 		{
 			"ImportPath": "github.com/fatih/color",
 			"Comment": "v0.1-17-g533cd7f",
 			"Rev": "533cd7fd8a85905f67a1753afb4deddc85ea174f"
+		},
+		{
+			"ImportPath": "github.com/gburanov/pr_helper/lib",
+			"Rev": "cf61de01aed476270ca076857bbe04c55118519f"
 		},
 		{
 			"ImportPath": "github.com/goamz/goamz/aws",
@@ -55,10 +59,6 @@
 		{
 			"ImportPath": "gopkg.in/yaml.v2",
 			"Rev": "a83829b6f1293c91addabc89d0571c246397bbf4"
-		},
-		{
-			"ImportPath": "pr_helper/lib",
-			"Rev": "008a1de8fbfdf324939ff405ef841dfadfcd890a"
 		}
 	]
 }
