@@ -2,18 +2,19 @@ package main
 
 import (
 	"bytes"
-	"gopkg.in/yaml.v2"
 	"io"
 	"log"
 	"os"
+
+	"gopkg.in/yaml.v2"
 )
 
 const SettingsFile = "settings.yml"
 
 type Settings struct {
-	AuthToken string
+	AuthToken   string
 	StreamToken string
-	Flow string
+	Flow        string
 }
 
 func readFile(filename string) []byte {

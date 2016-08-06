@@ -35,8 +35,7 @@ func ReadMessage() sqs.Message {
 }
 
 func DeleteMessage(m sqs.Message) {
-	conn := sqs.New(auth, aws.EUWest)
-	q, err := conn.CreateQueue("pr_helper_input")
+	q, err := getQueue()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -47,8 +46,7 @@ func DeleteMessage(m sqs.Message) {
 }
 
 func SendMessage(message string, uuid string) {
-	conn := sqs.New(auth, aws.EUWest)
-	q, err := conn.CreateQueue("pr_helper_output")
+	q, err := getQueue()
 	if err != nil {
 		log.Fatal(err)
 	}
