@@ -7,7 +7,7 @@ import (
 	"github.com/gburanov/pr_helper/lib"
 )
 
-func ProcessUrl(url string, cb pr_helper.Callback, m *pr_helper.Mutex) {
+func processUrl(url string, cb pr_helper.Callback, m *pr_helper.Mutex) {
 	showPr(url, cb, m)
 	cb("END OF MESSAGE")
 }
@@ -37,7 +37,7 @@ func main() {
 			fmt.Println("Invalid message processed")
 		} else {
 			callback := messageCallback(uuid)
-			go ProcessUrl(message.Body, callback, m)
+			go processUrl(message.Body, callback, m)
 		}
 		DeleteMessage(message)
 	}

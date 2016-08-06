@@ -8,17 +8,20 @@ import (
 	"github.com/goamz/goamz/sqs"
 )
 
-func getQueue() (*sqs.Queue, error) {
+const inputQueue string = "pr_helper_input"
+const outputQueue string = "pr_helper_output"
+
+func getQueue(name string) (*sqs.Queue, error) {
 	if len(auth.AccessKey) == 0 || len(auth.SecretKey) == 0 {
 		return nil, fmt.Errorf("AWS credentials are not provided")
 	}
 	conn := sqs.New(auth, aws.EUWest)
-	return conn.CreateQueue("pr_helper_input")
+	return conn.CreateQueue(name)
 }
 
 func ReadMessage() sqs.Message {
 	fmt.Println("Waiting for messages...")
-	q, err := getQueue()
+	q, err := getQueue(inputQueue)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -35,7 +38,7 @@ func ReadMessage() sqs.Message {
 }
 
 func DeleteMessage(m sqs.Message) {
-	q, err := getQueue()
+	q, err := getQueue(inputQueue)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,7 +49,7 @@ func DeleteMessage(m sqs.Message) {
 }
 
 func SendMessage(message string, uuid string) {
-	q, err := getQueue()
+	q, err := getQueue(outputQueue)
 	if err != nil {
 		log.Fatal(err)
 	}
