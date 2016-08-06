@@ -21,6 +21,11 @@ Create settings.yml file
     authtoken: token
     repositorypath: path to repository
 
+Set aws keys
+
+   AWS_PRIVATE_ACCESS_KEY_ID
+   AWS_PRIVATE_SECRET_ACCESS_KEY
+
 Copy blacklist file
 
 And run it
