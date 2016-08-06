@@ -2,15 +2,16 @@ package pr_helper
 
 import (
 	"bytes"
-	"gopkg.in/yaml.v2"
 	"io"
 	"log"
 	"os"
+
+	"gopkg.in/yaml.v2"
 )
 
-const SettingsFile = "settings.yml"
+const settingsFile = "settings.yml"
 
-type Settings struct {
+type settings struct {
 	AuthToken      string
 	RepositoryPath string
 	Verbosity      bool
@@ -28,15 +29,18 @@ func readFile(filename string) []byte {
 	return buf.Bytes()
 }
 
-func GetSettings() *Settings {
-	settings := new(Settings)
-	err := yaml.Unmarshal(readFile(SettingsFile), &settings)
+func getSettings() *settings {
+	settings := new(settings)
+	err := yaml.Unmarshal(readFile(settingsFile), &settings)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	// Do some overrides
-	settings.AuthToken = os.Getenv("GITHUB_ACCESS_TOKEN")
-	settings.RepositoryPath = "repository"
+	if len(settings.AuthToken) == 0 {
+		settings.AuthToken = os.Getenv("GITHUB_ACCESS_TOKEN")
+	}
+	if len(settings.RepositoryPath) == 0 {
+		settings.RepositoryPath = "repository"
+	}
 	return settings
 }

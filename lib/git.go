@@ -1,26 +1,31 @@
 package pr_helper
 
 import (
-	"github.com/fatih/color"
 	"log"
 	"os"
 	"os/exec"
-	"strings"
 	"strconv"
+	"strings"
 	"time"
+
+	"github.com/fatih/color"
 )
 
 func exists(path string) (bool, error) {
-    _, err := os.Stat(path)
-    if err == nil { return true, nil }
-    if os.IsNotExist(err) { return false, nil }
-    return true, err
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return true, err
 }
 
 func checkFileExist(repo *Repository, fileName string) bool {
 	error := repo.ExecuteSilently("test", "-f", fileName)
 	if error != nil {
-		if GetSettings().Verbosity {
+		if getSettings().Verbosity {
 			red := color.New(color.FgRed)
 			red.Println(fileName, "not found")
 		}
@@ -30,7 +35,7 @@ func checkFileExist(repo *Repository, fileName string) bool {
 }
 
 func fileStatistics(repo *Repository, fileName string) []Stat {
-	if GetSettings().Verbosity {
+	if getSettings().Verbosity {
 		yellow := color.New(color.FgYellow)
 		yellow.Println("Analyzing file ", fileName)
 	}
@@ -57,7 +62,7 @@ func fileStatistics(repo *Repository, fileName string) []Stat {
 		if strings.Contains(line, "author-mail <") {
 			email = strings.TrimSuffix(strings.TrimPrefix(line, "author-mail <"), ">")
 		}
-		if (strings.Contains(line, "author-time ")) {
+		if strings.Contains(line, "author-time ") {
 			time_as_str := strings.TrimPrefix(line, "author-time ")
 			time_as_int, err := strconv.ParseInt(time_as_str, 10, 64)
 			if err != nil {

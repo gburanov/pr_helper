@@ -1,33 +1,34 @@
 package pr_helper
 
 import (
-	"strings"
 	"errors"
-	"strconv"
-	"time"
 	"fmt"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/google/go-github/github"
 )
 
 type Manager struct {
-  Client       *github.Client
-	Cb Callback
-	M Mutex
+	Client *github.Client
+	Cb     Callback
+	M      Mutex
 }
 
 func NewManager(cb Callback, m *Mutex) *Manager {
-  return &Manager{
-		Client: github.NewClient(Token()),
-		Cb: cb,
-		M: *m,
+	return &Manager{
+		Client: github.NewClient(token()),
+		Cb:     cb,
+		M:      *m,
 	}
 }
 
 func (m *Manager) GetRepository(organization string, project string) (*Repository, error) {
-  repo := &Repository{
+	repo := &Repository{
 		Organization: organization,
-		Project: project,
-		Client: m.Client,
+		Project:      project,
+		Client:       m.Client,
 	}
 	m.Cb("Trying to lock repository...")
 	locked := m.M.TryLock(time.Second * 10)
@@ -37,13 +38,13 @@ func (m *Manager) GetRepository(organization string, project string) (*Repositor
 	} else {
 		m.Cb("Locked succesfully")
 	}
-  err := repo.Init(m.Cb)
+	err := repo.Init(m.Cb)
 	m.M.Unlock()
 	fmt.Println("Unlocked back")
 	if err != nil {
 		return nil, err
 	}
-  return repo, nil
+	return repo, nil
 }
 
 func (m *Manager) GetPR(url string) (*PR, error) {

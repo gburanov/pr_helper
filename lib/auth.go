@@ -1,14 +1,15 @@
 package pr_helper
 
 import (
-	"golang.org/x/oauth2"
 	"net/http"
+
+	"golang.org/x/oauth2"
 )
 
-func Token() *http.Client {
-	token_str := GetSettings().AuthToken
+func token() *http.Client {
+	tokenStr := getSettings().AuthToken
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: token_str},
+		&oauth2.Token{AccessToken: tokenStr},
 	)
 	return oauth2.NewClient(oauth2.NoContext, ts)
 }

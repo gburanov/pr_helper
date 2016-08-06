@@ -1,16 +1,17 @@
 package pr_helper
 
 import (
-	"github.com/google/go-github/github"
-	"log"
 	"fmt"
+	"log"
 	"os/exec"
+
+	"github.com/google/go-github/github"
 )
 
 type Repository struct {
 	Organization string
 	Project      string
-  Client       *github.Client
+	Client       *github.Client
 }
 
 func (repo *Repository) listPRsbyQuery(query string) []PR {
@@ -30,7 +31,7 @@ func (repo *Repository) listPRsbyQuery(query string) []PR {
 }
 
 func (repo *Repository) PRs() []PR {
-	query := "is:open repo:" + repo.Organization + "/" + repo.Project + " label:" + GetSettings().Label
+	query := "is:open repo:" + repo.Organization + "/" + repo.Project + " label:" + getSettings().Label
 	return repo.listPRsbyQuery(query)
 }
 
@@ -40,11 +41,11 @@ func (repo *Repository) GetPR(number int) (*PR, error) {
 }
 
 func (repo *Repository) LocalPath() string {
-	return GetSettings().RepositoryPath + "/" + repo.Organization + "/" + repo.Project
+	return getSettings().RepositoryPath + "/" + repo.Organization + "/" + repo.Project
 }
 
 func (repo *Repository) RootPath() string {
-	return GetSettings().RepositoryPath + "/" + repo.Organization
+	return getSettings().RepositoryPath + "/" + repo.Organization
 }
 
 func (repo *Repository) Init(cb Callback) error {
@@ -59,7 +60,9 @@ func (repo *Repository) Init(cb Callback) error {
 		command := exec.Command("git", "status")
 		command.Dir = repo.LocalPath()
 		err := command.Run()
-		if err != nil { repo.Create(cb) }
+		if err != nil {
+			repo.Create(cb)
+		}
 	}
 	// Update repo
 	command := exec.Command("git", "pull")
@@ -80,7 +83,7 @@ func (repo *Repository) Create(cb Callback) {
 	}
 
 	path := fmt.Sprintf("https://%s@github.com/%s/%s.git",
-	GetSettings().AuthToken, repo.Organization, repo.Project)
+		getSettings().AuthToken, repo.Organization, repo.Project)
 	err = repo.ExecuteCommandInDir(repo.RootPath(), "git", "clone", path)
 	if err != nil {
 		log.Fatal(err)
