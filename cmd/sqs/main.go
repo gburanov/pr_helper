@@ -5,9 +5,10 @@ import (
 	"log"
 
 	"github.com/gburanov/pr_helper/lib"
+	"github.com/joho/godotenv"
 )
 
-func processUrl(url string, cb pr_helper.Callback, m *pr_helper.Mutex) {
+func processURL(url string, cb pr_helper.Callback, m *pr_helper.Mutex) {
 	showPr(url, cb, m)
 	cb("END OF MESSAGE")
 }
@@ -21,6 +22,11 @@ func messageCallback(uuid string) pr_helper.Callback {
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	m := pr_helper.NewMutex()
 
@@ -37,7 +43,7 @@ func main() {
 			fmt.Println("Invalid message processed")
 		} else {
 			callback := messageCallback(uuid)
-			go processUrl(message.Body, callback, m)
+			go processURL(message.Body, callback, m)
 		}
 		DeleteMessage(message)
 	}
