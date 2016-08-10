@@ -1,5 +1,7 @@
 # pr_helper
 
+[![Build Status](https://travis-ci.org/gburanov/pr_helper_frontend.svg?branch=master)](https://travis-ci.org/gburanov/pr_helper_frontend)
+
 Installation and usage
 ----------------------
 First of all, install Go
