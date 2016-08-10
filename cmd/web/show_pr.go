@@ -1,42 +1,43 @@
 package main
 
 import (
-  "pr_helper"
-  "fmt"
+	"fmt"
+
+	"github.com/gburanov/pr_helper/lib"
 )
 
 func showPr(url string) string {
-  ret := "<p>Analyzing pr " + url
-  manager := pr_helper.NewManager()
-  pr, err := manager.GetPR(url)
-  if err != nil {
-    ret += err.Error()
-    return ret
-  }
-  ret += "<p>"
-  ret += pr.Topic()
-  ret += showAuthors(*pr)
+	ret := "<p>Analyzing pr " + url
+	manager := pr_helper.NewManager()
+	pr, err := manager.GetPR(url)
+	if err != nil {
+		ret += err.Error()
+		return ret
+	}
+	ret += "<p>"
+	ret += pr.Topic()
+	ret += showAuthors(*pr)
 
-  return ret
+	return ret
 }
 
 func showLeftStats(authors *pr_helper.Authors) string {
-  left, total := authors.GetLinesStat()
-  percent := float32(left)/float32(total)
+	left, total := authors.GetLinesStat()
+	percent := float32(left) / float32(total)
 
-  ret := fmt.Sprintf("<p>%d out of %d lines unmntained", left, total)
-  if (total > 100 && percent > 0.7) || (percent > 0.9) {
-    ret += "<p>" + "WARNING! DEEP LEGACY"
-  }
-  return ret
+	ret := fmt.Sprintf("<p>%d out of %d lines unmntained", left, total)
+	if (total > 100 && percent > 0.7) || (percent > 0.9) {
+		ret += "<p>" + "WARNING! DEEP LEGACY"
+	}
+	return ret
 }
 
 func showAuthors(pr pr_helper.PR) string {
-  ret := ""
-  authors := pr.Authors()
-  ret += showLeftStats(authors)
-  for author, lines := range *pr_helper.FilterTop(5, authors) {
-    ret += fmt.Sprintf("<p> %s [%d]", author.AsStr(), lines)
-  }
-  return ret
+	ret := ""
+	authors := pr.Authors()
+	ret += showLeftStats(authors)
+	for author, lines := range *pr_helper.FilterTop(5, authors) {
+		ret += fmt.Sprintf("<p> %s [%d]", author.AsStr(), lines)
+	}
+	return ret
 }
