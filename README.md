@@ -1,6 +1,6 @@
 # pr_helper
 
-[![Build Status](https://travis-ci.org/gburanov/pr_helper_frontend.svg?branch=master)](https://travis-ci.org/gburanov/pr_helper_frontend)
+[![Build Status](https://travis-ci.org/gburanov/pr_helper.svg?branch=master)](https://travis-ci.org/gburanov/pr_helper)
 
 Installation and usage
 ----------------------
