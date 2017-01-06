@@ -8,7 +8,10 @@ import (
 
 func showPr(url string) string {
 	ret := "<p>Analyzing pr " + url
-	manager := pr_helper.NewManager()
+
+	mutex := pr_helper.NewMutex()
+
+	manager := pr_helper.NewManager(nil, mutex)
 	pr, err := manager.GetPR(url)
 	if err != nil {
 		ret += err.Error()
@@ -21,7 +24,7 @@ func showPr(url string) string {
 	return ret
 }
 
-func showLeftStats(authors *pr_helper.Authors) string {
+func showLeftStats(authors []pr_helper.Authors) string {
 	left, total := authors.GetLinesStat()
 	percent := float32(left) / float32(total)
 
@@ -34,9 +37,8 @@ func showLeftStats(authors *pr_helper.Authors) string {
 
 func showAuthors(pr pr_helper.PR) string {
 	ret := ""
-	authors := pr.Authors()
-	ret += showLeftStats(authors)
-	for author, lines := range *pr_helper.FilterTop(5, authors) {
+	stats := pr.Stats()
+	for author, lines := range *pr_helper.FilterTop(5, stats.Authors()) {
 		ret += fmt.Sprintf("<p> %s [%d]", author.AsStr(), lines)
 	}
 	return ret

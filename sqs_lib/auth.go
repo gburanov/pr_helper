@@ -1,4 +1,4 @@
-package main
+package sqs_lib
 
 import (
 	"os"

@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gburanov/pr_helper/lib"
+	"github.com/gburanov/pr_helper"
+	"github.com/gburanov/pr_helper/sqs_lib"
 	"github.com/joho/godotenv"
 )
 
@@ -17,7 +18,7 @@ func messageCallback(uuid string) pr_helper.Callback {
 	return func(str string, args ...interface{}) {
 		message := fmt.Sprintf(str, args...)
 		fmt.Println(message)
-		SendMessage(message, uuid)
+		sqs_lib.SendMessage(message, uuid)
 	}
 }
 
@@ -31,7 +32,7 @@ func main() {
 	m := pr_helper.NewMutex()
 
 	for {
-		message := ReadMessage()
+		message := sqs_lib.ReadMessage()
 		var uuid string
 		for _, attr := range message.MessageAttribute {
 			if attr.Name == "uuid" {
@@ -45,6 +46,6 @@ func main() {
 			callback := messageCallback(uuid)
 			go processURL(message.Body, callback, m)
 		}
-		DeleteMessage(message)
+		sqs_lib.DeleteMessage(message)
 	}
 }
