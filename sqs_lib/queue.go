@@ -33,23 +33,19 @@ func getQueue(name string) (*Queue, error) {
 	return &Queue{Name: name, Queue: queue}, nil
 }
 
-func (queue *Queue) ReadMessage() sqs.Message {
-	fmt.Println("Waiting for messages...")
-	for {
-		resp, err := queue.Queue.ReceiveMessage(1)
-		if err != nil {
-			log.Print(err)
-			continue
-		}
-		if len(resp.Messages) != 0 {
-			return resp.Messages[0]
-		}
-	}
+func InputQueue() (*Queue, error) {
+	return getQueue(inputQueue)
 }
 
-func (queue *Queue) DeleteMessage(m sqs.Message) error {
-	_, err := queue.Queue.DeleteMessage(&m)
-	return err
+func OutputQueue() (*Queue, error) {
+	return getQueue(outputQueue)
+}
+
+func (queue *Queue) opposite() (*Queue, error) {
+	if queue.Name == inputQueue {
+		return getQueue(outputQueue)
+	}
+	return getQueue(inputQueue)
 }
 
 func (queue *Queue) SendMessage(message string, uuid string) error {
